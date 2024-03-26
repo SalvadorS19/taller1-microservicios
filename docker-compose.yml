@@ -1,0 +1,13 @@
+# Use postgres/example user/password credentials
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres
+    container_name: postgres_db
+    environment:
+      POSTGRES_DB: taller1_micro
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5432:5432"
