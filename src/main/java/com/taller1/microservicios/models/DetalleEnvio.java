@@ -1,5 +1,6 @@
 package com.taller1.microservicios.models;
 
+import com.taller1.microservicios.models.enums.EstadoEnvio;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +17,8 @@ public class DetalleEnvio {
     private String direccion;
 
     private String transportadora;
+
+    private EstadoEnvio estadoEnvio;
 
     @Column(unique = true)
     private String numeroGuia;
