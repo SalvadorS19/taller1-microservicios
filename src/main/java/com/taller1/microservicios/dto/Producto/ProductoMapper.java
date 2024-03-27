@@ -1,0 +1,11 @@
+package com.taller1.microservicios.dto.Producto;
+
+import com.taller1.microservicios.dto.Producto.ProductoDto;
+import com.taller1.microservicios.dto.Producto.ProductoToSaveDto;
+import com.taller1.microservicios.model.Producto;
+
+public interface ProductoMapper {
+    ProductoDto productoToProductoDto(Producto producto);
+    Producto productoDtoToCliente(ProductoDto productoDto);
+    Producto productoToSaveDtoToProducto(ProductoToSaveDto productoToSaveDto);
+}
