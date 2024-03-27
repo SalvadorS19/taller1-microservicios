@@ -22,7 +22,7 @@ public interface ClienteService {
 
     ClienteDto buscarClienteByDireccion(String direccion);
 
-    List<Cliente> buscarClientesNombreEmpiezaPor(String nombre);
+    List<ClienteDto> buscarClientesNombreEmpiezaPor(String nombre);
 
 
 

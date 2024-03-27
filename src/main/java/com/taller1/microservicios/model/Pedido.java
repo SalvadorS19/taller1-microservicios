@@ -27,14 +27,6 @@ public class Pedido {
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
     @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itemsPedido;
 
@@ -45,4 +37,12 @@ public class Pedido {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "detalleEnvio_id", referencedColumnName = "id")
     private DetalleEnvio detalleEnvio;
+
+    public DetalleEnvio getDetalleEnvio() {
+        return detalleEnvio;
+    }
+
+    public void setDetalleEnvio(DetalleEnvio detalleEnvio) {
+        this.detalleEnvio = detalleEnvio;
+    }
 }

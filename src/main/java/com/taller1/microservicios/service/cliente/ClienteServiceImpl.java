@@ -8,6 +8,8 @@ import com.taller1.microservicios.repository.ClienteRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
@@ -42,31 +44,46 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public ClienteDto buscarClienteById(Long id) {
-        return null;
+        Cliente cliente = this.clienteRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("Cliente no encontrado"));
+        return this.clienteMapper.clienteToClienteDto(cliente);
     }
 
     @Override
     public void removerCliente(Long id) {
-
+        Cliente cliente = this.clienteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente no encontado"));
+        this.clienteRepository.delete(cliente);
     }
 
     @Override
     public List<ClienteDto> getAllClientes() {
-        return null;
+        List<Cliente> clientes = this.clienteRepository.findAll();
+        return clientes.stream().map(this.clienteMapper::clienteToClienteDto).toList();
     }
 
     @Override
     public ClienteDto buscarClienteByEmail(String email) {
-        return null;
+        Cliente cliente = this.clienteRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Cliente no encontado"));
+        return this.clienteMapper.clienteToClienteDto(cliente);
     }
 
     @Override
     public ClienteDto buscarClienteByDireccion(String direccion) {
-        return null;
+        Cliente cliente = this.clienteRepository.findByDireccion(direccion)
+                .orElseThrow(() -> new RuntimeException("Cliente no encontado"));
+        return this.clienteMapper.clienteToClienteDto(cliente);
     }
 
     @Override
-    public List<Cliente> buscarClientesNombreEmpiezaPor(String nombre) {
-        return null;
+    public List<ClienteDto> buscarClientesNombreEmpiezaPor(String nombre) {
+        List<Cliente> clientes = this.clienteRepository.findByNombreStartsWith(nombre);
+        if (clientes.isEmpty()) {
+            throw new RuntimeException("No existen clientes");
+        } else {
+            return clientes.stream().map(this.clienteMapper::clienteToClienteDto).toList();
+        }
+
     }
 }
