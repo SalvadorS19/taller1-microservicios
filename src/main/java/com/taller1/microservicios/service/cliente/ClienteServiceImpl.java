@@ -30,7 +30,14 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public ClienteDto actualizarCliente(Long id, ClienteToSaveDto clienteToSaveDto) {
-        return null;
+        return clienteRepository.findById(id).map(clienteInDb -> {
+            clienteInDb.setNombre(clienteToSaveDto.nombre());
+            clienteInDb.setEmail(clienteToSaveDto.email());
+            clienteInDb.setDireccion(clienteToSaveDto.direccion());
+
+            clienteRepository.save(clienteInDb);
+            return this.clienteMapper.clienteToClienteDto(clienteInDb);
+        }).orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
     }
 
     @Override
