@@ -1,9 +1,8 @@
-package com.taller1.microservicios.models;
+package com.taller1.microservicios.model;
 
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Collection;
 import java.util.List;
 
 @Entity

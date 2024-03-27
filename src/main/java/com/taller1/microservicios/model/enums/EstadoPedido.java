@@ -1,4 +1,4 @@
-package com.taller1.microservicios.models.enums;
+package com.taller1.microservicios.model.enums;
 
 public enum EstadoPedido {
     PENDIENTE,

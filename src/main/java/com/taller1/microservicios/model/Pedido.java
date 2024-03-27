@@ -1,6 +1,6 @@
-package com.taller1.microservicios.models;
+package com.taller1.microservicios.model;
 
-import com.taller1.microservicios.models.enums.EstadoPedido;
+import com.taller1.microservicios.model.enums.EstadoPedido;
 import jakarta.persistence.*;
 import lombok.*;
 

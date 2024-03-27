@@ -1,7 +1,7 @@
 package com.taller1.microservicios.repository;
 
-import com.taller1.microservicios.models.Pago;
-import com.taller1.microservicios.models.enums.MetodoPago;
+import com.taller1.microservicios.model.Pago;
+import com.taller1.microservicios.model.enums.MetodoPago;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;

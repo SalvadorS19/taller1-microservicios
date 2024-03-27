@@ -1,6 +1,6 @@
-package com.taller1.microservicios.models;
+package com.taller1.microservicios.model;
 
-import com.taller1.microservicios.models.enums.MetodoPago;
+import com.taller1.microservicios.model.enums.MetodoPago;
 import jakarta.persistence.*;
 import lombok.*;
 
