@@ -2,12 +2,12 @@ package com.taller1.microservicios.models;
 
 import com.taller1.microservicios.models.enums.EstadoEnvio;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "detalle_envios", uniqueConstraints = {@UniqueConstraint(columnNames = "numeroGuia")})
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter @Setter @Builder
 public class DetalleEnvio {
 

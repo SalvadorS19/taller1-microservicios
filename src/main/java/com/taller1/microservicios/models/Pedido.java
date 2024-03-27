@@ -2,15 +2,15 @@ package com.taller1.microservicios.models;
 
 import com.taller1.microservicios.models.enums.EstadoPedido;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "pedidos")
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter @Setter @Builder
 public class Pedido {
 
@@ -23,8 +23,17 @@ public class Pedido {
     @Enumerated(EnumType.STRING)
     private EstadoPedido estado;
 
-    @ManyToOne @JoinColumn(name = "cliente_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
 
     @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itemsPedido;

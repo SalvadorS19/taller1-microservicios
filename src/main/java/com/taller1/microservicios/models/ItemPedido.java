@@ -1,12 +1,12 @@
 package com.taller1.microservicios.models;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "items_pedidos")
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter @Setter @Builder
 public class ItemPedido {
 

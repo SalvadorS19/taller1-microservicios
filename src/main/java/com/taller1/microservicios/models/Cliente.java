@@ -1,14 +1,15 @@
 package com.taller1.microservicios.models;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "clientes", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter @Setter @Builder
 public class Cliente {
 

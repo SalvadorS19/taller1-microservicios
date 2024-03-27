@@ -2,14 +2,14 @@ package com.taller1.microservicios.models;
 
 import com.taller1.microservicios.models.enums.MetodoPago;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "pagos")
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter @Setter @Builder
 public class Pago {
 
