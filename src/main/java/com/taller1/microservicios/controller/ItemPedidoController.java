@@ -43,7 +43,7 @@ public class ItemPedidoController {
         return this.itemPedidoService.getAllItemPedidos();
     }
 
-    @GetMapping("/product/{orderId}")
+    @GetMapping("/order/{orderId}")
     List<ItemPedidoDto> buscarItemPedidoByidPedido(@PathVariable Long orderId){
         return this.itemPedidoService.buscarItemPedidoByidPedido(orderId);
     }
