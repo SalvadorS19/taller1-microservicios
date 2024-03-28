@@ -12,6 +12,6 @@ public interface ItemPedidoRepository extends JpaRepository<ItemPedido, Long> {
 
     List<ItemPedido> findByProductoId(Long productoId);
 
-    @Query("SELECT SUM(p.cantidad * p.precioUnitario) FROM ItemPedido p where p.id = ?1")
+    @Query("SELECT SUM(p.cantidad * p.precioUnitario) FROM ItemPedido p where p.producto.id = :productoId")
     Optional<Double> findTotalVentasByProducto(Long productoId);
 }
