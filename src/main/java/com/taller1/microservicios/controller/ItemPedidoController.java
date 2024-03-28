@@ -53,7 +53,7 @@ public class ItemPedidoController {
         return this.itemPedidoService.buscarItemPedidoByidProducto(productId);
     }
 
-    @GetMapping("/product/{productId}")
+    @GetMapping("/product/totalVentas/{productId}")
     Double sumaTotalVentasDeidProducto(@PathVariable Long productId){
         return this.itemPedidoService.sumaTotalVentasDeidProducto(productId);
     }
