@@ -24,6 +24,4 @@ public interface ClienteService {
 
     List<ClienteDto> buscarClientesNombreEmpiezaPor(String nombre);
 
-
-
 }

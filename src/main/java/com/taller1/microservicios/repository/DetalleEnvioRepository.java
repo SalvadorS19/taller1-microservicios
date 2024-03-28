@@ -5,9 +5,10 @@ import com.taller1.microservicios.model.enums.EstadoEnvio;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DetalleEnvioRepository extends JpaRepository<DetalleEnvio, Long> {
-    DetalleEnvio findByPedidoId(Long pedido_id);
+    Optional<DetalleEnvio> findByPedidoId(Long pedido_id);
 
     List<DetalleEnvio> findByTransportadora(String transportadora);
 

@@ -6,8 +6,8 @@ import com.taller1.microservicios.model.enums.MetodoPago;
 import java.time.LocalDateTime;
 
 public record PedidoToSaveDto(
-        LocalDateTime fechaPedido,
         EstadoPedido estadoPedido,
-        Long clienteId
+        Long clienteId,
+        Long pagoId
 ) {
 }
