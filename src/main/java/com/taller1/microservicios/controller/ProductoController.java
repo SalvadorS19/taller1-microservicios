@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/products")
 public class ProductoController {
 
     private final ProductoService productoService;
@@ -18,42 +19,42 @@ public class ProductoController {
         this.productoService = productoService;
     }
 
-    @PostMapping("/producto")
+    @PostMapping
     ProductoDto crearProducto(@RequestBody ProductoToSaveDto productoToSaveDto){
         return this.productoService.crearProducto(productoToSaveDto);
     }
 
-    @PutMapping("/producto/{id}")
+    @PutMapping("/{id}")
     ProductoDto actualizarProducto(@PathVariable Long id,@RequestBody ProductoToSaveDto productoToSaveDto){
         return this.productoService.actualizarProducto(id,productoToSaveDto);
     }
 
-    @GetMapping("/producto/{id}")
+    @GetMapping("/{id}")
     ProductoDto buscarProductoById(@PathVariable Long id){
         return this.productoService.buscarProductoById(id);
     }
 
-    @DeleteMapping("/producto/{id}")
+    @DeleteMapping("/{id}")
     void removerProducto(@PathVariable Long id){
         this.productoService.removerProducto(id);
     }
 
-    @GetMapping("/producto")
+    @GetMapping
     List<ProductoDto> getAllProductos(){
         return this.productoService.getAllProductos();
     }
 
-    @GetMapping("/producto/porTermino/{termino}")
-    List<ProductoDto> buscarProductoByTermino(@PathVariable String termino){
-        return  this.productoService.buscarProductoByTermino(termino);
+    @GetMapping("/search")
+    List<ProductoDto> buscarProductoByTermino(@RequestParam String searchTerm){
+        return  this.productoService.buscarProductoByTermino(searchTerm);
     }
 
-    @GetMapping("/producto/enStock")
+    @GetMapping("/instock")
     List<ProductoDto> buscarProductosByStock(){
         return  this.productoService.buscarProductosByStock();
     }
 
-    @GetMapping("/producto/filterMenorA")
+    @GetMapping("/filterLessThan")
     List<ProductoDto> buscarProductoMenoresByPrecioAndStock(@RequestParam Double precio, @RequestParam Integer stock){
         return this.productoService.buscarProductoMenoresByPrecioAndStock(precio,stock);
     }
