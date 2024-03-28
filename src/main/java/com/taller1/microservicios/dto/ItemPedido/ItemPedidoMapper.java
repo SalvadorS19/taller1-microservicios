@@ -1,7 +1,5 @@
 package com.taller1.microservicios.dto.ItemPedido;
 
-import com.taller1.microservicios.dto.ItemPedido.ItemPedidoDto;
-import com.taller1.microservicios.dto.ItemPedido.ItemPedidoToSaveDto;
 import com.taller1.microservicios.model.ItemPedido;
 import org.mapstruct.Mapper;
 

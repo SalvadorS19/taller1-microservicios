@@ -21,7 +21,7 @@ public class Pedido {
     private LocalDateTime fechaPedido;
 
     @Enumerated(EnumType.STRING)
-    private EstadoPedido estado;
+    private EstadoPedido estadoPedido;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)

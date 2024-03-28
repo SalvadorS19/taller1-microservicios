@@ -14,7 +14,6 @@ public interface DetalleEnvioMapper {
     DetalleEnvioDto detalleEnvioToDetalleEnvioDto(DetalleEnvio detalleEnvio);
     DetalleEnvio detalleEnvioDtoToDetalleEnvio(DetalleEnvioDto detalleEnvioDto);
 
-    @Mapping(source = "pedido_id", target = "pedido")
     DetalleEnvio detalleEnvioToSaveDtoToDetalleEnvio(DetalleEnvioToSaveDto detalleEnvioToSaveDto);
 
     List<DetalleEnvioDto> detalleEnvioListToDetalleEnvioDtoList(List<DetalleEnvio> detalleEnvios);

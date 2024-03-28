@@ -15,7 +15,7 @@ public class ItemPedidoServiceImpl implements ItemPedidoService{
     private final ItemPedidoMapper itemPedidoMapper;
     private final ItemPedidoRepository itemPedidoRepository;
 
-    public ItemPedidoServiceImpl(ItemPedidoMapper itemPedidoMapper, ItemPedidoService itemPedidoService, ItemPedidoRepository itemPedidoRepository) {
+    public ItemPedidoServiceImpl(ItemPedidoMapper itemPedidoMapper, ItemPedidoRepository itemPedidoRepository) {
         this.itemPedidoMapper = itemPedidoMapper;
         this.itemPedidoRepository = itemPedidoRepository;
     }

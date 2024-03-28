@@ -12,8 +12,8 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 
     List<Pedido> findByFechaPedidoBetween(LocalDateTime fecha1, LocalDateTime fecha2);
 
-    List<Pedido> findByClienteIdAndEstado(Long clienteId, EstadoPedido estado);
+    List<Pedido> findByClienteIdAndEstadoPedido(Long clienteId, EstadoPedido estadoPedido);
 
-    @Query("SELECT p FROM Pedido p JOIN FETCH p.itemsPedido itemsPedido WHERE p.cliente.id = ?1")
-    List<Pedido> findAllByCliente(Long clienteId);
+    @Query("SELECT DISTINCT p FROM Pedido p WHERE p.cliente.id = ?1")
+    List<Pedido> findPedidoConProductosByCliente(Long clienteId);
 }

@@ -1,6 +1,7 @@
 package com.taller1.microservicios.service.pedido;
 import com.taller1.microservicios.dto.Pedido.PedidoDto;
 import com.taller1.microservicios.dto.Pedido.PedidoToSaveDto;
+import com.taller1.microservicios.dto.Pedido.PedidoToUpdateDto;
 import com.taller1.microservicios.model.enums.EstadoPedido;
 
 import java.time.LocalDateTime;
@@ -10,7 +11,7 @@ public interface PedidoService {
 
     PedidoDto crearPedido(PedidoToSaveDto pedidoToSaveDto);
 
-    PedidoDto actualizarPedido(Long id, PedidoToSaveDto pedidoToSaveDto);
+    PedidoDto actualizarPedido(Long id, PedidoToUpdateDto pedidoToUpdateDto);
 
     PedidoDto buscarPedidoById(Long id);
 
@@ -18,9 +19,9 @@ public interface PedidoService {
 
     List<PedidoDto> getAllPedidos();
 
-    List<PedidoDto> buscarPedidosByRangoFechas(LocalDateTime fechaInicio, LocalDateTime fechaFin);
+    List<PedidoDto> buscarPedidosByRangoFechas(String fechaInicio, String fechaFin);
 
     List<PedidoDto> buscarPedidoByClienteIdAndEstado(Long clienteId, EstadoPedido estadoPedido);
 
-    List<?> buscarPedidosConProductos(Long clienteId);
+    List<PedidoDto> buscarPedidosConProductos(Long clienteId);
 }
