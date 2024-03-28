@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/customers")
 public class ClienteController {
 
     private final ClienteService clienteService;
@@ -16,42 +17,42 @@ public class ClienteController {
         this.clienteService = clienteService;
     }
 
-    @PostMapping("/cliente")
+    @PostMapping
     ClienteDto crearCliente(@RequestBody ClienteToSaveDto clienteToSaveDto) {
         return this.clienteService.crearCliente(clienteToSaveDto);
     }
 
-    @PutMapping("/cliente/{id}")
+    @PutMapping("/{id}")
     ClienteDto actualizarCliente(@PathVariable Long id, @RequestBody ClienteToSaveDto clienteToSaveDto) {
         return this.clienteService.actualizarCliente(id, clienteToSaveDto);
     }
 
-    @GetMapping("/cliente")
+    @GetMapping
     List<ClienteDto> getAllClientes() {
         return this.clienteService.getAllClientes();
     }
 
-    @GetMapping("/cliente/{id}")
+    @GetMapping("/{id}")
     ClienteDto getClienteById(@PathVariable Long id) {
         return this.clienteService.buscarClienteById(id);
     }
 
-    @DeleteMapping("/cliente/{id}")
+    @DeleteMapping("/{id}")
     void removerCliente(@PathVariable Long id) {
         this.clienteService.removerCliente(id);
     }
 
-    @GetMapping("/cliente/byEmail/{email}")
+    @GetMapping("/email/{email}")
     ClienteDto getClienteByEmail(@PathVariable String email) {
         return this.clienteService.buscarClienteByEmail(email);
     }
 
-    @GetMapping("/cliente/byDireccion/{direccion}")
+    @GetMapping("/address/{direccion}")
     ClienteDto getClienteByDireccion(@PathVariable String direccion) {
         return this.clienteService.buscarClienteByDireccion(direccion);
     }
 
-    @GetMapping("/cliente/nombreEmpiezaPor/{nombre}")
+    @GetMapping("/nameStartingWith/{nombre}")
     List<ClienteDto> getClientesNombreEmpiezaPor(@PathVariable String nombre) {
         return this.clienteService.buscarClientesNombreEmpiezaPor(nombre);
     }

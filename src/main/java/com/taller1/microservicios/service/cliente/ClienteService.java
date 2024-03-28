@@ -12,7 +12,7 @@ public interface ClienteService {
 
     ClienteDto actualizarCliente(Long id, ClienteToSaveDto clienteToSaveDto);
 
-    ClienteDto buscarClienteById(Long id); // Agregar exception
+    ClienteDto buscarClienteById(Long id);
 
     void removerCliente(Long id);
 
