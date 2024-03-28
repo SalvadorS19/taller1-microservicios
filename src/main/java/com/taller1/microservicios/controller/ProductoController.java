@@ -50,7 +50,7 @@ public class ProductoController {
     }
 
     @GetMapping("/instock")
-    List<ProductoDto> buscarProductosByStock(){
+    List<ProductoDto> buscarProductosEnStock(){
         return  this.productoService.buscarProductosEnStock();
     }
 
