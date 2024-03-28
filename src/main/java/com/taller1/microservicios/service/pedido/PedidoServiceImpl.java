@@ -4,6 +4,7 @@ import com.taller1.microservicios.dto.Pedido.PedidoDto;
 import com.taller1.microservicios.dto.Pedido.PedidoMapper;
 import com.taller1.microservicios.dto.Pedido.PedidoToSaveDto;
 import com.taller1.microservicios.dto.Pedido.PedidoToUpdateDto;
+import com.taller1.microservicios.exception.PedidoNotFoundException;
 import com.taller1.microservicios.model.Cliente;
 import com.taller1.microservicios.model.Pedido;
 import com.taller1.microservicios.model.enums.EstadoPedido;
@@ -44,7 +45,7 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public PedidoDto actualizarPedido(Long id, PedidoToUpdateDto pedidoToUpdateDto) {
         Pedido pedido = this.pedidoRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("No existe el pedido"));
+                .orElseThrow(()-> new PedidoNotFoundException("No existe el pedido"));
         pedido.setEstadoPedido(pedidoToUpdateDto.estadoPedido());
         this.pedidoRepository.save(pedido);
         return this.pedidoMapper.pedidoToPedidoDto(pedido);
@@ -53,14 +54,14 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public PedidoDto buscarPedidoById(Long id) {
         Pedido pedido = this.pedidoRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("No existe el pedido"));
+                .orElseThrow(()-> new PedidoNotFoundException("No existe el pedido"));
         return this.pedidoMapper.pedidoToPedidoDto(pedido);
     }
 
     @Override
     public void removerPedido(Long id) {
         Pedido pedido = this.pedidoRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("No existe el pedido"));
+                .orElseThrow(()-> new PedidoNotFoundException("No existe el pedido"));
         this.pedidoRepository.delete(pedido);
     }
 

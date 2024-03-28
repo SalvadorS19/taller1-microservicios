@@ -41,7 +41,7 @@ public class ItemPedidoServiceImpl implements ItemPedidoService{
                 .orElseThrow(() -> new PedidoNotFoundException("El pedido no existe"));
         Producto producto = this.productoRepository.findById(itemPedidoToSaveDto.productoId())
                 .orElseThrow(() -> new ProductoNotFoundException("El producto no existe"));
-        ItemPedido itemPedido= this.itemPedidoMapper.ItemPedidoToSaveDtoToItemPedido(itemPedidoToSaveDto);
+        ItemPedido itemPedido = this.itemPedidoMapper.ItemPedidoToSaveDtoToItemPedido(itemPedidoToSaveDto);
         itemPedido.setPedido(pedido);
         itemPedido.setProducto(producto);
         itemPedido.setPrecioUnitario(producto.getPrecio());

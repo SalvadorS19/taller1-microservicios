@@ -8,6 +8,9 @@ import java.util.List;
 
 @Mapper(componentModel = "spring" )
 public interface ItemPedidoMapper {
+
+    @Mapping(source = "pedido.id", target = "pedidoId")
+    @Mapping(source = "producto.id", target = "productoId")
     ItemPedidoDto ItemPedidoToItemPedidoDto(ItemPedido ItemPedido);
     ItemPedido ItemPedidoToSaveDtoToItemPedido(ItemPedidoToSaveDto ItemPedidoToSaveDto);
     List<ItemPedidoDto> itemPedidoListToItemPedidoDtoList(List<ItemPedido> itemPedidos);
