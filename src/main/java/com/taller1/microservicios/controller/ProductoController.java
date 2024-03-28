@@ -51,7 +51,7 @@ public class ProductoController {
 
     @GetMapping("/instock")
     List<ProductoDto> buscarProductosByStock(){
-        return  this.productoService.buscarProductosByStock();
+        return  this.productoService.buscarProductosEnStock();
     }
 
     @GetMapping("/filterLessThan")

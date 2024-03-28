@@ -10,6 +10,6 @@ public interface ProductoService {
     void removerProducto(Long id);
     List<ProductoDto> getAllProductos();
     List<ProductoDto> buscarProductoByTermino(String termino);
-    List<ProductoDto> buscarProductosByStock();
+    List<ProductoDto> buscarProductosEnStock();
     List<ProductoDto> buscarProductoMenoresByPrecioAndStock(Double precio, Integer Stock);
 }
