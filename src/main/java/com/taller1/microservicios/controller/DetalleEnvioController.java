@@ -11,11 +11,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/shipping")
-public class DetalleenvioController {
+public class DetalleEnvioController {
 
     private final DetalleEnvioService detalleEnvioService;
 
-    public DetalleenvioController(DetalleEnvioService detalleEnvioService) {
+    public DetalleEnvioController(DetalleEnvioService detalleEnvioService) {
         this.detalleEnvioService = detalleEnvioService;
     }
 

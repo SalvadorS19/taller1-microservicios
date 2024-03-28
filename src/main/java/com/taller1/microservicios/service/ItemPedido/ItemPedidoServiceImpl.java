@@ -4,8 +4,14 @@ import com.taller1.microservicios.dto.ItemPedido.ItemPedidoDto;
 import com.taller1.microservicios.dto.ItemPedido.ItemPedidoMapper;
 import com.taller1.microservicios.dto.ItemPedido.ItemPedidoToSaveDto;
 import com.taller1.microservicios.dto.ItemPedido.ItemPedidoUpdateDto;
+import com.taller1.microservicios.exception.PedidoNotFoundException;
+import com.taller1.microservicios.exception.ProductoNotFoundException;
 import com.taller1.microservicios.model.ItemPedido;
+import com.taller1.microservicios.model.Pedido;
+import com.taller1.microservicios.model.Producto;
 import com.taller1.microservicios.repository.ItemPedidoRepository;
+import com.taller1.microservicios.repository.PedidoRepository;
+import com.taller1.microservicios.repository.ProductoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,15 +20,31 @@ import java.util.List;
 public class ItemPedidoServiceImpl implements ItemPedidoService{
     private final ItemPedidoMapper itemPedidoMapper;
     private final ItemPedidoRepository itemPedidoRepository;
+    private final PedidoRepository pedidoRepository;
+    private final ProductoRepository productoRepository;
 
-    public ItemPedidoServiceImpl(ItemPedidoMapper itemPedidoMapper, ItemPedidoRepository itemPedidoRepository) {
+    public ItemPedidoServiceImpl(
+            ItemPedidoMapper itemPedidoMapper,
+            ItemPedidoRepository itemPedidoRepository,
+            ProductoRepository productoRepository,
+            PedidoRepository pedidoRepository
+    ) {
         this.itemPedidoMapper = itemPedidoMapper;
         this.itemPedidoRepository = itemPedidoRepository;
+        this.productoRepository = productoRepository;
+        this.pedidoRepository = pedidoRepository;
     }
 
     @Override
     public ItemPedidoDto crearItemPedido(ItemPedidoToSaveDto itemPedidoToSaveDto) {
+        Pedido pedido = this.pedidoRepository.findById(itemPedidoToSaveDto.pedidoId())
+                .orElseThrow(() -> new PedidoNotFoundException("El pedido no existe"));
+        Producto producto = this.productoRepository.findById(itemPedidoToSaveDto.productoId())
+                .orElseThrow(() -> new ProductoNotFoundException("El producto no existe"));
         ItemPedido itemPedido= this.itemPedidoMapper.ItemPedidoToSaveDtoToItemPedido(itemPedidoToSaveDto);
+        itemPedido.setPedido(pedido);
+        itemPedido.setProducto(producto);
+        itemPedido.setPrecioUnitario(producto.getPrecio());
         itemPedidoRepository.save(itemPedido);
         return this.itemPedidoMapper.ItemPedidoToItemPedidoDto(itemPedido);
     }
@@ -65,7 +87,7 @@ public class ItemPedidoServiceImpl implements ItemPedidoService{
 
     @Override
     public List<ItemPedidoDto> buscarItemPedidoByidProducto(Long idProducto) {
-        List<ItemPedido> pedidos = this.itemPedidoRepository.findByPedidoId(idProducto);
+        List<ItemPedido> pedidos = this.itemPedidoRepository.findByProductoId(idProducto);
         return this.itemPedidoMapper.itemPedidoListToItemPedidoDtoList(pedidos);
     }
 
