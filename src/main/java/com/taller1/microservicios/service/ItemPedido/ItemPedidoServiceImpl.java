@@ -4,6 +4,7 @@ import com.taller1.microservicios.dto.ItemPedido.ItemPedidoDto;
 import com.taller1.microservicios.dto.ItemPedido.ItemPedidoMapper;
 import com.taller1.microservicios.dto.ItemPedido.ItemPedidoToSaveDto;
 import com.taller1.microservicios.dto.ItemPedido.ItemPedidoUpdateDto;
+import com.taller1.microservicios.exception.ItemPedidoNotFoundException;
 import com.taller1.microservicios.exception.PedidoNotFoundException;
 import com.taller1.microservicios.exception.ProductoNotFoundException;
 import com.taller1.microservicios.model.ItemPedido;
@@ -50,33 +51,32 @@ public class ItemPedidoServiceImpl implements ItemPedidoService{
     }
 
     @Override
+    public List<ItemPedidoDto> getAllItemPedidos() {
+        List<ItemPedido> pedidos = this.itemPedidoRepository.findAll();
+        return this.itemPedidoMapper.itemPedidoListToItemPedidoDtoList(pedidos);
+    }
+
+    @Override
+    public ItemPedidoDto buscarItemPedidoById(Long id) {
+        ItemPedido itemPedido = this.itemPedidoRepository.findById(id)
+                .orElseThrow(() -> new ItemPedidoNotFoundException("ItemPedido no existe"));
+        return this.itemPedidoMapper.ItemPedidoToItemPedidoDto(itemPedido);
+    }
+
+    @Override
     public ItemPedidoDto actualizarItemPedido(Long id, ItemPedidoUpdateDto itemPedidoUpdateDto) {
-        ItemPedido itemPedido= this.itemPedidoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("ItemPedido no existe"));
+        ItemPedido itemPedido = this.itemPedidoRepository.findById(id)
+                .orElseThrow(() -> new ItemPedidoNotFoundException("ItemPedido no existe"));
         itemPedido.setCantidad(itemPedidoUpdateDto.cantidad());
-        itemPedido.setPrecioUnitario(itemPedidoUpdateDto.precioUnitario());
         itemPedidoRepository.save(itemPedido);
         return this.itemPedidoMapper.ItemPedidoToItemPedidoDto(itemPedido);
     }
 
     @Override
-    public ItemPedidoDto buscarItemPedidoById(Long id) {
-        ItemPedido itemPedido= this.itemPedidoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("ItemPedido no existe"));
-        return this.itemPedidoMapper.ItemPedidoToItemPedidoDto(itemPedido);
-    }
-
-    @Override
     public void removerItemPedido(Long id) {
-        ItemPedido itemPedido= this.itemPedidoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("ItemPedido no existe"));
+        ItemPedido itemPedido = this.itemPedidoRepository.findById(id)
+                .orElseThrow(() -> new ItemPedidoNotFoundException("ItemPedido no existe"));
         itemPedidoRepository.delete(itemPedido);
-    }
-
-    @Override
-    public List<ItemPedidoDto> getAllItemPedidos() {
-        List<ItemPedido> pedidos = this.itemPedidoRepository.findAll();
-        return this.itemPedidoMapper.itemPedidoListToItemPedidoDtoList(pedidos);
     }
 
     @Override
@@ -93,9 +93,7 @@ public class ItemPedidoServiceImpl implements ItemPedidoService{
 
     @Override
     public Double sumaTotalVentasDeidProducto(Long idProducto) {
-        Double totalVentas = this.itemPedidoRepository.findTotalVentasByProducto(idProducto)
+        return this.itemPedidoRepository.findTotalVentasByProducto(idProducto)
                 .orElseThrow(() -> new RuntimeException("Error calculando total"));
-        return totalVentas;
-
     }
 }

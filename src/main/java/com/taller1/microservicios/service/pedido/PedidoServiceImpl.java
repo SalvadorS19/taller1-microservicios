@@ -4,6 +4,7 @@ import com.taller1.microservicios.dto.Pedido.PedidoDto;
 import com.taller1.microservicios.dto.Pedido.PedidoMapper;
 import com.taller1.microservicios.dto.Pedido.PedidoToSaveDto;
 import com.taller1.microservicios.dto.Pedido.PedidoToUpdateDto;
+import com.taller1.microservicios.exception.ClienteNotFoundException;
 import com.taller1.microservicios.exception.PedidoNotFoundException;
 import com.taller1.microservicios.model.Cliente;
 import com.taller1.microservicios.model.Pedido;
@@ -35,7 +36,7 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public PedidoDto crearPedido(PedidoToSaveDto pedidoToSaveDto) {
         Cliente cliente = this.clienteRepository.findById(pedidoToSaveDto.clienteId())
-                .orElseThrow(()-> new RuntimeException("No existe el cliente"));
+                .orElseThrow(()-> new ClienteNotFoundException("No existe el cliente"));
         Pedido pedido = this.pedidoMapper.pedidoToSaveDtoToPedido(pedidoToSaveDto);
         pedido.setCliente(cliente);
         this.pedidoRepository.save(pedido);
