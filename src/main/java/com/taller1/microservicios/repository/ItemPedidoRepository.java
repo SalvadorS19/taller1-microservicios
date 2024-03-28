@@ -8,9 +8,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ItemPedidoRepository extends JpaRepository<ItemPedido, Long> {
+
     List<ItemPedido> findByPedidoId(Long pedidoId);
 
     List<ItemPedido> findByProductoId(Long productoId);
+
+    Optional<ItemPedido> findByProductoIdAndPedidoId(Long productoId, Long pedidoId);
 
     @Query("SELECT SUM(ip.cantidad * ip.precioUnitario) FROM ItemPedido ip WHERE ip.producto.id = :productoId")
     Optional<Double> findTotalVentasByProducto(Long productoId);
