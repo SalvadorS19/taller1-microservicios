@@ -12,7 +12,6 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
     @Query("select p from Producto p where p.stock >= 1")
     List<Producto> findByInStock();
-
     List<Producto> findByPrecioLessThanEqualAndStockLessThanEqual(Double precio, Integer stock);
 
 }
