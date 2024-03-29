@@ -5,7 +5,6 @@ import com.taller1.microservicios.model.enums.EstadoEnvio;
 public record DetalleEnvioToSaveDto(
         String direccion,
         String transportadora,
-        EstadoEnvio estadoEnvio,
         Long pedidoId
 ) {
 }

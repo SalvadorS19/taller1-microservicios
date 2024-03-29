@@ -39,6 +39,7 @@ public class DetalleEnvioServiceImpl implements DetalleEnvioService {
         String numeroGuia = "ENV-" + detalleEnvio.getId() + ahora.getMonthValue() + ahora.getYear();
         detalleEnvio.setNumeroGuia(numeroGuia);
         detalleEnvio.setPedido(pedido);
+        detalleEnvio.setEstadoEnvio(EstadoEnvio.ENVIADO);
         this.detalleEnvioRepository.save(detalleEnvio);
         return this.detalleEnvioMapper.detalleEnvioToDetalleEnvioDto(detalleEnvio);
     }
