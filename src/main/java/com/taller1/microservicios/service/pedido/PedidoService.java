@@ -1,5 +1,6 @@
 package com.taller1.microservicios.service.pedido;
 import com.taller1.microservicios.dto.Pedido.PedidoDto;
+import com.taller1.microservicios.dto.Pedido.PedidoProductosDto;
 import com.taller1.microservicios.dto.Pedido.PedidoToSaveDto;
 import com.taller1.microservicios.dto.Pedido.PedidoToUpdateDto;
 import com.taller1.microservicios.model.enums.EstadoPedido;
@@ -23,5 +24,5 @@ public interface PedidoService {
 
     List<PedidoDto> buscarPedidoByClienteIdAndEstado(Long clienteId, EstadoPedido estadoPedido);
 
-    List<PedidoDto> buscarPedidosConProductos(Long clienteId);
+    List<PedidoProductosDto> buscarPedidosConProductos(Long clienteId);
 }

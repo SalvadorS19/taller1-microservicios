@@ -1,9 +1,7 @@
 package com.taller1.microservicios.service.pedido;
 
-import com.taller1.microservicios.dto.Pedido.PedidoDto;
-import com.taller1.microservicios.dto.Pedido.PedidoMapper;
-import com.taller1.microservicios.dto.Pedido.PedidoToSaveDto;
-import com.taller1.microservicios.dto.Pedido.PedidoToUpdateDto;
+import com.taller1.microservicios.dto.ItemPedido.ItemPedidoMapper;
+import com.taller1.microservicios.dto.Pedido.*;
 import com.taller1.microservicios.exception.ClienteNotFoundException;
 import com.taller1.microservicios.exception.PedidoNotFoundException;
 import com.taller1.microservicios.model.Cliente;
@@ -24,14 +22,18 @@ public class PedidoServiceImpl implements PedidoService {
     private final PedidoRepository pedidoRepository;
     private final PedidoMapper pedidoMapper;
 
+    private final ItemPedidoMapper itemPedidoMapper;
+
     public PedidoServiceImpl(
             PedidoRepository pedidoRepository,
             PedidoMapper pedidoMapper,
-            ClienteRepository clienteRepository
+            ClienteRepository clienteRepository,
+            ItemPedidoMapper itemPedidoMapper
     ) {
         this.pedidoRepository = pedidoRepository;
         this.pedidoMapper = pedidoMapper;
         this.clienteRepository = clienteRepository;
+        this.itemPedidoMapper = itemPedidoMapper;
     }
     @Override
     public PedidoDto crearPedido(PedidoToSaveDto pedidoToSaveDto) {
@@ -88,8 +90,17 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public List<PedidoDto> buscarPedidosConProductos(Long clienteId) {
+    public List<PedidoProductosDto> buscarPedidosConProductos(Long clienteId) {
         List<Pedido> pedidos = this.pedidoRepository.findPedidoConProductosByCliente(clienteId);
-        return this.pedidoMapper.pedidoListToPedidoDtoList(pedidos);
+        List<PedidoProductosDto> pedidoProductosDtoList = pedidos.stream().map(
+                pedido -> new PedidoProductosDto(
+                        pedido.getId(),
+                        pedido.getFechaPedido(),
+                        pedido.getEstadoPedido(),
+                        pedido.getCliente().getId(),
+                        this.itemPedidoMapper.itemPedidoListToItemPedidoDtoList(pedido.getItemsPedido())
+                )
+        ).toList();
+        return pedidoProductosDtoList;
     }
 }

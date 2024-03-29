@@ -12,7 +12,6 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {PedidoService.class})
 public interface DetalleEnvioMapper {
     DetalleEnvioDto detalleEnvioToDetalleEnvioDto(DetalleEnvio detalleEnvio);
-    DetalleEnvio detalleEnvioDtoToDetalleEnvio(DetalleEnvioDto detalleEnvioDto);
 
     DetalleEnvio detalleEnvioToSaveDtoToDetalleEnvio(DetalleEnvioToSaveDto detalleEnvioToSaveDto);
 

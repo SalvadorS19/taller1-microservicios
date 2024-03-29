@@ -1,6 +1,7 @@
 package com.taller1.microservicios.controller;
 
 import com.taller1.microservicios.dto.Pedido.PedidoDto;
+import com.taller1.microservicios.dto.Pedido.PedidoProductosDto;
 import com.taller1.microservicios.dto.Pedido.PedidoToSaveDto;
 import com.taller1.microservicios.dto.Pedido.PedidoToUpdateDto;
 import com.taller1.microservicios.model.enums.EstadoPedido;
@@ -56,7 +57,7 @@ public class PedidoController {
     }
 
     @GetMapping("/customer/{customerId}")
-    List<PedidoDto> getPedidosConProductosByClienteId(@PathVariable Long customerId) {
+    List<PedidoProductosDto> getPedidosConProductosByClienteId(@PathVariable Long customerId) {
         return this.pedidoService.buscarPedidosConProductos(customerId);
     }
 }
