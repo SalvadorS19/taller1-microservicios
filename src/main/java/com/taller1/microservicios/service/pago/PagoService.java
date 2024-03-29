@@ -19,7 +19,7 @@ public interface PagoService {
 
     List<PagoDto> getAllPagos();
 
-    List<PagoDto> buscarPagosByRangoFecha(LocalDateTime fechaInicio, LocalDateTime fechaFin);
+    List<PagoDto> buscarPagosByRangoFecha(String fechaInicio, String fechaFin);
 
-    PagoDto buscarPagosByPedidoId(Long pedidoId);
+    PagoDto buscarPagoByPedidoId(Long pedidoId);
 }

@@ -10,6 +10,7 @@ import com.taller1.microservicios.repository.PagoRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -61,13 +62,17 @@ public class PagoServiceImpl implements PagoService{
     }
 
     @Override
-    public List<PagoDto> buscarPagosByRangoFecha(LocalDateTime fechaInicio, LocalDateTime fechaFin) {
-        List<Pago> pagos = this.pagoRepository.findByFechaPagoBetween(fechaInicio,fechaFin);
+    public List<PagoDto> buscarPagosByRangoFecha(String fechaInicio, String fechaFin) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        List<Pago> pagos = this.pagoRepository.findByFechaPagoBetween(
+                LocalDateTime.parse(fechaInicio, formatter),
+                LocalDateTime.parse(fechaInicio, formatter)
+        );
         return this.pagoMapper.pagoListToPagoDtoList(pagos);
     }
 
     @Override
-    public PagoDto buscarPagosByPedidoId(Long pedidoId) {
+    public PagoDto buscarPagoByPedidoId(Long pedidoId) {
         Pago pago = this.pagoRepository.findByPedidoId(pedidoId).orElseThrow(() -> new RuntimeException("El pago no existe"));
         return this.pagoMapper.pagoToPagoDto(pago);
     }
