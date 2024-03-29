@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
-public class PagoServiceImpl implements PagoService{
+public class PagoServiceImpl implements PagoService {
 
     private final PagoRepository pagoRepository;
     private final PagoMapper pagoMapper;
@@ -37,9 +37,12 @@ public class PagoServiceImpl implements PagoService{
     public PagoDto crearPago(PagoToSaveDto pagoToSaveDto) {
         Pedido pedido = this.pedidoRepository.findById(pagoToSaveDto.pedidoId())
                 .orElseThrow(() -> new PedidoNotFoundException("No existe el pedido a pagar"));
+        if (pedido.getPago() != null) {
+            throw new RuntimeException("El pedido ya ha sido pagado");
+        }
         Pago pago = this.pagoMapper.pagoToSaveDtoToPago(pagoToSaveDto);
-        this.pagoRepository.save(pago);
-        pedido.setPago(pago);
+        Pago pagoInDb = this.pagoRepository.save(pago);
+        pedido.setPago(pagoInDb);
         this.pedidoRepository.save(pedido);
         return this.pagoMapper.pagoToPagoDto(pago);
     }
