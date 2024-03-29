@@ -8,6 +8,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring" )
 public interface PagoMapper {
+    @Mapping(source = "pedido.id", target = "pedidoId")
     PagoDto pagoToPagoDto(Pago pago);
     @Mapping(target = "fechaPago", expression = "java(java.time.LocalDateTime.now())")
     Pago pagoToSaveDtoToPago(PagoToSaveDto pagoToSaveDto);

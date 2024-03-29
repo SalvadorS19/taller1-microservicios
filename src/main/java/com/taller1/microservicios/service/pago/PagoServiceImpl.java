@@ -55,14 +55,16 @@ public class PagoServiceImpl implements PagoService{
 
     @Override
     public PagoDto buscarPagoById(Long id) {
-        Pago pago = this.pagoRepository.findById(id).orElseThrow(() -> new RuntimeException("El pago no existe"));
+        Pago pago = this.pagoRepository.findById(id)
+                .orElseThrow(() -> new PagoNotFoundException("El pago no existe"));
         return this.pagoMapper.pagoToPagoDto(pago);
     }
 
     @Override
     public void removerPago(Long id) {
-        Pago pago = this.pagoRepository.findById(id).orElseThrow(() -> new RuntimeException("El pago no existe"));
-            this.pagoRepository.delete(pago);
+        Pago pago = this.pagoRepository.findById(id)
+                .orElseThrow(() -> new PagoNotFoundException("El pago no existe"));
+        this.pagoRepository.delete(pago);
     }
 
     @Override
@@ -82,7 +84,8 @@ public class PagoServiceImpl implements PagoService{
 
     @Override
     public PagoDto buscarPagoByPedidoId(Long pedidoId) {
-        Pago pago = this.pagoRepository.findByPedidoId(pedidoId).orElseThrow(() -> new RuntimeException("El pago no existe"));
+        Pago pago = this.pagoRepository.findByPedidoId(pedidoId)
+                .orElseThrow(() -> new PagoNotFoundException("El pago no existe"));
         return this.pagoMapper.pagoToPagoDto(pago);
     }
 }
