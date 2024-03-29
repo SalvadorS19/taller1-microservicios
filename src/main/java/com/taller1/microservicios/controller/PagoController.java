@@ -19,7 +19,7 @@ public class PagoController {
     }
 
     @PostMapping
-    PagoDto crearPago(PagoToSaveDto pagoToSaveDto) {
+    PagoDto crearPago(@RequestBody PagoToSaveDto pagoToSaveDto) {
         return this.pagoService.crearPago(pagoToSaveDto);
     }
 
