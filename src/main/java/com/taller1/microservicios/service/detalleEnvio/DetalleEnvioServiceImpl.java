@@ -36,7 +36,7 @@ public class DetalleEnvioServiceImpl implements DetalleEnvioService {
                 .orElseThrow(() -> new RuntimeException("No existe un pedido asociado al envio"));
         DetalleEnvio detalleEnvio = this.detalleEnvioMapper.detalleEnvioToSaveDtoToDetalleEnvio(detalleEnvioToSaveDto);
         LocalDateTime ahora = LocalDateTime.now();
-        String numeroGuia = "ENV-" + detalleEnvio.getId() + ahora.getMonthValue() + ahora.getYear();
+        String numeroGuia = "ENV-" + pedido.getId() + ahora.getMonthValue() + ahora.getYear();
         detalleEnvio.setNumeroGuia(numeroGuia);
         detalleEnvio.setPedido(pedido);
         detalleEnvio.setEstadoEnvio(EstadoEnvio.ENVIADO);

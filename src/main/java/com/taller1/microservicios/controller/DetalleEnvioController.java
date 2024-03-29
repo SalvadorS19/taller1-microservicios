@@ -49,12 +49,12 @@ public class DetalleEnvioController {
         return this.detalleEnvioService.getDetalleEnvioByPedidoId(orderId);
     }
 
-    @GetMapping("/carrier?name=")
+    @GetMapping("/carrier")
     List<DetalleEnvioDto> getDetalleEnviosByTransportadora(@RequestParam String carrier){
         return this.detalleEnvioService.getDetalleEnviosByTransportadora(carrier);
     }
 
-    @GetMapping("/estadoEnvio?name=")
+    @GetMapping("/estadoEnvio")
     List<DetalleEnvioDto> getDetalleEnviosByEstado(@RequestParam EstadoEnvio estadoEnvio){
         return this.detalleEnvioService.getDetalleEnviosByEstado(estadoEnvio);
     }
