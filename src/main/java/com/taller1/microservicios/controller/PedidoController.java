@@ -1,14 +1,13 @@
 package com.taller1.microservicios.controller;
 
-import com.taller1.microservicios.dto.Pedido.PedidoDto;
-import com.taller1.microservicios.dto.Pedido.PedidoProductosDto;
-import com.taller1.microservicios.dto.Pedido.PedidoToSaveDto;
-import com.taller1.microservicios.dto.Pedido.PedidoToUpdateDto;
+import com.taller1.microservicios.dto.pedido.PedidoDto;
+import com.taller1.microservicios.dto.pedido.PedidoProductosDto;
+import com.taller1.microservicios.dto.pedido.PedidoToSaveDto;
+import com.taller1.microservicios.dto.pedido.PedidoToUpdateDto;
 import com.taller1.microservicios.model.enums.EstadoPedido;
 import com.taller1.microservicios.service.pedido.PedidoService;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController

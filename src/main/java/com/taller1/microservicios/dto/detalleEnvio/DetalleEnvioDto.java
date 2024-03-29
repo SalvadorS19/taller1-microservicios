@@ -1,4 +1,4 @@
-package com.taller1.microservicios.dto.DetalleEnvio;
+package com.taller1.microservicios.dto.detalleEnvio;
 
 import com.taller1.microservicios.model.enums.EstadoEnvio;
 

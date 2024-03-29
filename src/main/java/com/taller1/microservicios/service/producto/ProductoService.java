@@ -1,6 +1,6 @@
 package com.taller1.microservicios.service.producto;
-import com.taller1.microservicios.dto.Producto.ProductoDto;
-import com.taller1.microservicios.dto.Producto.ProductoToSaveDto;
+import com.taller1.microservicios.dto.producto.ProductoDto;
+import com.taller1.microservicios.dto.producto.ProductoToSaveDto;
 import java.util.List;
 public interface ProductoService {
 

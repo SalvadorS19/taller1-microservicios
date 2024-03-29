@@ -1,8 +1,8 @@
 package com.taller1.microservicios.service.ItemPedido;
 
-import com.taller1.microservicios.dto.ItemPedido.ItemPedidoDto;
-import com.taller1.microservicios.dto.ItemPedido.ItemPedidoToSaveDto;
-import com.taller1.microservicios.dto.ItemPedido.ItemPedidoUpdateDto;
+import com.taller1.microservicios.dto.itemPedido.ItemPedidoDto;
+import com.taller1.microservicios.dto.itemPedido.ItemPedidoToSaveDto;
+import com.taller1.microservicios.dto.itemPedido.ItemPedidoUpdateDto;
 
 import java.util.List;
 

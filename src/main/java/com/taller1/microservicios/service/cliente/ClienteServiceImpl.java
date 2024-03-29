@@ -1,8 +1,8 @@
 package com.taller1.microservicios.service.cliente;
 
-import com.taller1.microservicios.dto.Cliente.ClienteDto;
-import com.taller1.microservicios.dto.Cliente.ClienteMapper;
-import com.taller1.microservicios.dto.Cliente.ClienteToSaveDto;
+import com.taller1.microservicios.dto.cliente.ClienteDto;
+import com.taller1.microservicios.dto.cliente.ClienteMapper;
+import com.taller1.microservicios.dto.cliente.ClienteToSaveDto;
 import com.taller1.microservicios.exception.ClienteNotFoundException;
 import com.taller1.microservicios.model.Cliente;
 import com.taller1.microservicios.repository.ClienteRepository;

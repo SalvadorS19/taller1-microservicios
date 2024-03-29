@@ -1,8 +1,8 @@
 package com.taller1.microservicios.service.producto;
 
-import com.taller1.microservicios.dto.Producto.ProductoDto;
-import com.taller1.microservicios.dto.Producto.ProductoMapper;
-import com.taller1.microservicios.dto.Producto.ProductoToSaveDto;
+import com.taller1.microservicios.dto.producto.ProductoDto;
+import com.taller1.microservicios.dto.producto.ProductoMapper;
+import com.taller1.microservicios.dto.producto.ProductoToSaveDto;
 import com.taller1.microservicios.exception.ProductoNotFoundException;
 import com.taller1.microservicios.model.Producto;
 import com.taller1.microservicios.repository.ProductoRepository;

@@ -1,9 +1,6 @@
-package com.taller1.microservicios.dto.DetalleEnvio;
+package com.taller1.microservicios.dto.detalleEnvio;
 
-import com.taller1.microservicios.dto.DetalleEnvio.DetalleEnvioDto;
-import com.taller1.microservicios.dto.DetalleEnvio.DetalleEnvioToSaveDto;
 import com.taller1.microservicios.model.DetalleEnvio;
-import com.taller1.microservicios.service.pedido.PedidoService;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

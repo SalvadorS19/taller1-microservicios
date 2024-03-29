@@ -1,6 +1,6 @@
 package com.taller1.microservicios.service.pedido;
 
-import com.taller1.microservicios.dto.Pedido.*;
+import com.taller1.microservicios.dto.pedido.*;
 import com.taller1.microservicios.exception.ClienteNotFoundException;
 import com.taller1.microservicios.exception.PedidoNotFoundException;
 import com.taller1.microservicios.model.Cliente;

@@ -1,8 +1,8 @@
 package com.taller1.microservicios.controller;
 
-import com.taller1.microservicios.dto.Pago.PagoDto;
-import com.taller1.microservicios.dto.Pago.PagoToSaveDto;
-import com.taller1.microservicios.dto.Pago.PagoUpdateDto;
+import com.taller1.microservicios.dto.pago.PagoDto;
+import com.taller1.microservicios.dto.pago.PagoToSaveDto;
+import com.taller1.microservicios.dto.pago.PagoUpdateDto;
 import com.taller1.microservicios.service.pago.PagoService;
 import org.springframework.web.bind.annotation.*;
 

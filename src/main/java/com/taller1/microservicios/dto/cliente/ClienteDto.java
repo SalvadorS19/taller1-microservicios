@@ -1,4 +1,4 @@
-package com.taller1.microservicios.dto.Cliente;
+package com.taller1.microservicios.dto.cliente;
 
 public record ClienteDto(
         Long id,

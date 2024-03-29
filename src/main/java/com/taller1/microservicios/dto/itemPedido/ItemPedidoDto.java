@@ -1,4 +1,4 @@
-package com.taller1.microservicios.dto.ItemPedido;
+package com.taller1.microservicios.dto.itemPedido;
 
 public record ItemPedidoDto(
         Long id,

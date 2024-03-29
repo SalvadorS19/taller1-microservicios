@@ -1,4 +1,4 @@
-package com.taller1.microservicios.dto.Cliente;
+package com.taller1.microservicios.dto.cliente;
 
 import com.taller1.microservicios.model.Cliente;
 import org.mapstruct.Mapper;

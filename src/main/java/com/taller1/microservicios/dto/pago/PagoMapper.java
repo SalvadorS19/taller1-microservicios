@@ -1,4 +1,4 @@
-package com.taller1.microservicios.dto.Pago;
+package com.taller1.microservicios.dto.pago;
 
 import com.taller1.microservicios.model.Pago;
 import org.mapstruct.Mapper;

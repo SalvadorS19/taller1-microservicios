@@ -1,5 +1,5 @@
-package com.taller1.microservicios.dto.Pedido;
-import com.taller1.microservicios.dto.ItemPedido.ItemPedidoMapper;
+package com.taller1.microservicios.dto.pedido;
+import com.taller1.microservicios.dto.itemPedido.ItemPedidoMapper;
 import com.taller1.microservicios.model.Pedido;
 import com.taller1.microservicios.model.enums.EstadoPedido;
 import org.mapstruct.Mapper;

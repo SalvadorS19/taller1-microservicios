@@ -1,10 +1,8 @@
 package com.taller1.microservicios.controller;
 
-import com.taller1.microservicios.dto.Producto.ProductoDto;
-import com.taller1.microservicios.dto.Producto.ProductoToSaveDto;
-import com.taller1.microservicios.model.Producto;
+import com.taller1.microservicios.dto.producto.ProductoDto;
+import com.taller1.microservicios.dto.producto.ProductoToSaveDto;
 import com.taller1.microservicios.service.producto.ProductoService;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -1,8 +1,8 @@
 package com.taller1.microservicios.controller;
 
-import com.taller1.microservicios.dto.DetalleEnvio.DetalleEnvioDto;
-import com.taller1.microservicios.dto.DetalleEnvio.DetalleEnvioToSaveDto;
-import com.taller1.microservicios.dto.DetalleEnvio.DetalleEnvioUpdateDto;
+import com.taller1.microservicios.dto.detalleEnvio.DetalleEnvioDto;
+import com.taller1.microservicios.dto.detalleEnvio.DetalleEnvioToSaveDto;
+import com.taller1.microservicios.dto.detalleEnvio.DetalleEnvioUpdateDto;
 import com.taller1.microservicios.model.enums.EstadoEnvio;
 import com.taller1.microservicios.service.detalleEnvio.DetalleEnvioService;
 import org.springframework.web.bind.annotation.*;

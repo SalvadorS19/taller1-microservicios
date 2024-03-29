@@ -1,9 +1,9 @@
 package com.taller1.microservicios.service.detalleEnvio;
 
-import com.taller1.microservicios.dto.DetalleEnvio.DetalleEnvioDto;
-import com.taller1.microservicios.dto.DetalleEnvio.DetalleEnvioMapper;
-import com.taller1.microservicios.dto.DetalleEnvio.DetalleEnvioToSaveDto;
-import com.taller1.microservicios.dto.DetalleEnvio.DetalleEnvioUpdateDto;
+import com.taller1.microservicios.dto.detalleEnvio.DetalleEnvioDto;
+import com.taller1.microservicios.dto.detalleEnvio.DetalleEnvioMapper;
+import com.taller1.microservicios.dto.detalleEnvio.DetalleEnvioToSaveDto;
+import com.taller1.microservicios.dto.detalleEnvio.DetalleEnvioUpdateDto;
 import com.taller1.microservicios.exception.DetalleEnvioNotFoundException;
 import com.taller1.microservicios.model.DetalleEnvio;
 import com.taller1.microservicios.model.Pedido;
