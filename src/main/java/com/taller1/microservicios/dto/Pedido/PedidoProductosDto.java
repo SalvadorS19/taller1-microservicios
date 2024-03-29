@@ -11,6 +11,6 @@ public record PedidoProductosDto(
         LocalDateTime fechaPedido,
         EstadoPedido estadoPedido,
         Long clienteId,
-        List<ItemPedidoDto> itemPedidos
+        List<ItemPedidoDto> itemsPedido
 ) {
 }

@@ -92,15 +92,6 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public List<PedidoProductosDto> buscarPedidosConProductos(Long clienteId) {
         List<Pedido> pedidos = this.pedidoRepository.findPedidoConProductosByCliente(clienteId);
-        List<PedidoProductosDto> pedidoProductosDtoList = pedidos.stream().map(
-                pedido -> new PedidoProductosDto(
-                        pedido.getId(),
-                        pedido.getFechaPedido(),
-                        pedido.getEstadoPedido(),
-                        pedido.getCliente().getId(),
-                        this.itemPedidoMapper.itemPedidoListToItemPedidoDtoList(pedido.getItemsPedido())
-                )
-        ).toList();
-        return pedidoProductosDtoList;
+        return this.pedidoMapper.pedidoListToPedidoProductosListDto(pedidos);
     }
 }
