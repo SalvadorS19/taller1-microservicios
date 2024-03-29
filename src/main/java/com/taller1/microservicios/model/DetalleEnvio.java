@@ -23,6 +23,7 @@ public class DetalleEnvio {
     @Column(unique = true)
     private String numeroGuia;
 
-    @OneToOne(mappedBy = "detalleEnvio")
+    @OneToOne
+    @JoinColumn(name = "pedido_id")
     private Pedido pedido;
 }

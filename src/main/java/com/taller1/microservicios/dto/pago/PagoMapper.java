@@ -12,5 +12,5 @@ public interface PagoMapper {
     PagoDto pagoToPagoDto(Pago pago);
     @Mapping(target = "fechaPago", expression = "java(java.time.LocalDateTime.now())")
     Pago pagoToSaveDtoToPago(PagoToSaveDto pagoToSaveDto);
-    List<PagoDto> pagoListToPagoDtoList(List<Pago> pago);
+    List<PagoDto> pagoListToPagoDtoList(List<Pago> pagos);
 }

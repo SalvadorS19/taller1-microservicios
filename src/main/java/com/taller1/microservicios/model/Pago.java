@@ -24,6 +24,7 @@ public class Pago {
     @Enumerated(EnumType.STRING)
     private MetodoPago metodoPago;
 
-    @OneToOne(mappedBy = "pago")
+    @OneToOne
+    @JoinColumn(name = "pedido_id")
     private Pedido pedido;
 }

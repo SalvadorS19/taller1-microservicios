@@ -10,6 +10,7 @@ import com.taller1.microservicios.model.Pedido;
 import com.taller1.microservicios.model.enums.EstadoEnvio;
 import com.taller1.microservicios.repository.DetalleEnvioRepository;
 import com.taller1.microservicios.repository.PedidoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

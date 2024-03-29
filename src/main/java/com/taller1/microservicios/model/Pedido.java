@@ -27,14 +27,12 @@ public class Pedido {
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
-    @OneToMany(mappedBy = "pedido")
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.REMOVE)
     private List<ItemPedido> itemsPedido;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "pago_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "pedido", cascade = CascadeType.REMOVE)
     private Pago pago;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "detalleEnvio_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "pedido", cascade = CascadeType.REMOVE)
     private DetalleEnvio detalleEnvio;
 }

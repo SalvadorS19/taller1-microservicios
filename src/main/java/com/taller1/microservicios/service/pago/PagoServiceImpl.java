@@ -1,6 +1,5 @@
 package com.taller1.microservicios.service.pago;
 
-import com.taller1.microservicios.dto.itemPedido.ItemPedidoDto;
 import com.taller1.microservicios.dto.pago.PagoDto;
 import com.taller1.microservicios.dto.pago.PagoMapper;
 import com.taller1.microservicios.dto.pago.PagoToSaveDto;
@@ -12,7 +11,6 @@ import com.taller1.microservicios.model.Pago;
 import com.taller1.microservicios.model.Pedido;
 import com.taller1.microservicios.repository.PagoRepository;
 import com.taller1.microservicios.repository.PedidoRepository;
-import com.taller1.microservicios.service.ItemPedido.ItemPedidoService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -48,7 +46,7 @@ public class PagoServiceImpl implements PagoService {
         }
         Pago pago = this.pagoMapper.pagoToSaveDtoToPago(pagoToSaveDto);
         pago.setPedido(pedido);
-        Double totalPago = 0.0;
+        double totalPago = 0.0;
         for (ItemPedido itemPedido : itemsPedido) {
             totalPago += (itemPedido.getPrecioUnitario() * itemPedido.getCantidad());
         }
@@ -90,9 +88,9 @@ public class PagoServiceImpl implements PagoService {
     @Override
     public List<PagoDto> buscarPagosByRangoFecha(String fechaInicio, String fechaFin) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        List<Pago> pagos = this.pagoRepository.findByFechaPagoBetween(
+        List<Pago> pagos = this.pagoRepository.findByFechaPagoIsBetween(
                 LocalDateTime.parse(fechaInicio, formatter),
-                LocalDateTime.parse(fechaInicio, formatter)
+                LocalDateTime.parse(fechaFin, formatter)
         );
         return this.pagoMapper.pagoListToPagoDtoList(pagos);
     }
