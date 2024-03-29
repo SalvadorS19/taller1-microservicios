@@ -14,6 +14,8 @@ public interface PedidoMapper {
     ItemPedidoMapper itemPedidoMapper = Mappers.getMapper(ItemPedidoMapper.class);
 
     @Mapping(source = "cliente.id", target = "clienteId")
+    @Mapping(source = "pago.id", target = "pagoId")
+    @Mapping(source = "detalleEnvio.id", target = "detalleEnvioId")
     PedidoDto pedidoToPedidoDto(Pedido pedido);
     default Pedido pedidoToSaveDtoToPedido(PedidoToSaveDto pedidoToSaveDto) {
         return Pedido.builder()
@@ -25,15 +27,25 @@ public interface PedidoMapper {
 
     default List<PedidoProductosDto> pedidoListToPedidoProductosListDto(List<Pedido> pedidos) {
         return pedidos.stream().map(
-                pedido -> new PedidoProductosDto(
-                        pedido.getId(),
-                        pedido.getFechaPedido(),
-                        pedido.getEstadoPedido(),
-                        pedido.getCliente().getId(),
-                        pedido.getPago().getId(),
-                        pedido.getDetalleEnvio().getId(),
-                        itemPedidoMapper.itemPedidoListToItemPedidoDtoList(pedido.getItemsPedido())
-                )
+                pedido -> {
+                    Long pagoId = null;
+                    Long detalleEnvioId = null;
+                    if (pedido.getPago() != null) {
+                        pagoId = pedido.getPago().getId();
+                    }
+                    if (pedido.getDetalleEnvio() != null) {
+                        detalleEnvioId = pedido.getDetalleEnvio().getId();
+                    }
+                    return new PedidoProductosDto(
+                            pedido.getId(),
+                            pedido.getFechaPedido(),
+                            pedido.getEstadoPedido(),
+                            pedido.getCliente().getId(),
+                            pagoId,
+                            detalleEnvioId,
+                            itemPedidoMapper.itemPedidoListToItemPedidoDtoList(pedido.getItemsPedido())
+                    );
+                }
         ).toList();
     }
 }

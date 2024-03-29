@@ -1,6 +1,5 @@
 package com.taller1.microservicios.service.pedido;
 
-import com.taller1.microservicios.dto.ItemPedido.ItemPedidoMapper;
 import com.taller1.microservicios.dto.Pedido.*;
 import com.taller1.microservicios.exception.ClienteNotFoundException;
 import com.taller1.microservicios.exception.PedidoNotFoundException;
@@ -22,18 +21,14 @@ public class PedidoServiceImpl implements PedidoService {
     private final PedidoRepository pedidoRepository;
     private final PedidoMapper pedidoMapper;
 
-    private final ItemPedidoMapper itemPedidoMapper;
-
     public PedidoServiceImpl(
             PedidoRepository pedidoRepository,
             PedidoMapper pedidoMapper,
-            ClienteRepository clienteRepository,
-            ItemPedidoMapper itemPedidoMapper
+            ClienteRepository clienteRepository
     ) {
         this.pedidoRepository = pedidoRepository;
         this.pedidoMapper = pedidoMapper;
         this.clienteRepository = clienteRepository;
-        this.itemPedidoMapper = itemPedidoMapper;
     }
     @Override
     public PedidoDto crearPedido(PedidoToSaveDto pedidoToSaveDto) {

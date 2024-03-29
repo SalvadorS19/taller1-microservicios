@@ -42,6 +42,8 @@ public class DetalleEnvioServiceImpl implements DetalleEnvioService {
         detalleEnvio.setPedido(pedido);
         detalleEnvio.setEstadoEnvio(EstadoEnvio.ENVIADO);
         this.detalleEnvioRepository.save(detalleEnvio);
+        pedido.setDetalleEnvio(detalleEnvio);
+        this.pedidoRepository.save(pedido);
         return this.detalleEnvioMapper.detalleEnvioToDetalleEnvioDto(detalleEnvio);
     }
 
