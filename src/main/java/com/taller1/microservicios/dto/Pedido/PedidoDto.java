@@ -9,6 +9,8 @@ public record PedidoDto(
         Long id,
         LocalDateTime fechaPedido,
         EstadoPedido estadoPedido,
-        Long clienteId
+        Long clienteId,
+        Long pagoId,
+        Long detalleEnvioId
 ) {
 }

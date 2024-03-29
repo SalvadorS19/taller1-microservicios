@@ -47,8 +47,8 @@ public class ClienteController {
         return this.clienteService.buscarClienteByEmail(email);
     }
 
-    @GetMapping("/address/{direccion}")
-    ClienteDto getClienteByDireccion(@PathVariable String direccion) {
+    @GetMapping("/address")
+    ClienteDto getClienteByDireccion(@RequestParam String direccion) {
         return this.clienteService.buscarClienteByDireccion(direccion);
     }
 

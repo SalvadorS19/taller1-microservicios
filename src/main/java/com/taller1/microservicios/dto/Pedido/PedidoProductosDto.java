@@ -11,6 +11,8 @@ public record PedidoProductosDto(
         LocalDateTime fechaPedido,
         EstadoPedido estadoPedido,
         Long clienteId,
+        Long pagoId,
+        Long detalleEnvioId,
         List<ItemPedidoDto> itemsPedido
 ) {
 }

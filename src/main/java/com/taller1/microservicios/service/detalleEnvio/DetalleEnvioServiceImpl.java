@@ -4,6 +4,7 @@ import com.taller1.microservicios.dto.DetalleEnvio.DetalleEnvioDto;
 import com.taller1.microservicios.dto.DetalleEnvio.DetalleEnvioMapper;
 import com.taller1.microservicios.dto.DetalleEnvio.DetalleEnvioToSaveDto;
 import com.taller1.microservicios.dto.DetalleEnvio.DetalleEnvioUpdateDto;
+import com.taller1.microservicios.exception.DetalleEnvioNotFoundException;
 import com.taller1.microservicios.model.DetalleEnvio;
 import com.taller1.microservicios.model.Pedido;
 import com.taller1.microservicios.model.enums.EstadoEnvio;
@@ -33,7 +34,7 @@ public class DetalleEnvioServiceImpl implements DetalleEnvioService {
     @Override
     public DetalleEnvioDto crearDetalleEnvio(DetalleEnvioToSaveDto detalleEnvioToSaveDto) {
         Pedido pedido = this.pedidoRepository.findById(detalleEnvioToSaveDto.pedidoId())
-                .orElseThrow(() -> new RuntimeException("No existe un pedido asociado al envio"));
+                .orElseThrow(() -> new DetalleEnvioNotFoundException("No existe un pedido asociado al envio"));
         DetalleEnvio detalleEnvio = this.detalleEnvioMapper.detalleEnvioToSaveDtoToDetalleEnvio(detalleEnvioToSaveDto);
         LocalDateTime ahora = LocalDateTime.now();
         String numeroGuia = "ENV-" + pedido.getId() + ahora.getMonthValue() + ahora.getYear();
@@ -47,7 +48,7 @@ public class DetalleEnvioServiceImpl implements DetalleEnvioService {
     @Override
     public DetalleEnvioDto actualizarDetalleEnvio(Long id, DetalleEnvioUpdateDto detalleEnvioUpdateDto) {
         DetalleEnvio detalleEnvio = this.detalleEnvioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("El envio no existe"));
+                .orElseThrow(() -> new DetalleEnvioNotFoundException("El envio no existe"));
         detalleEnvio.setDireccion(detalleEnvioUpdateDto.direccion());
         detalleEnvio.setEstadoEnvio(detalleEnvioUpdateDto.estadoEnvio());
         detalleEnvio.setTransportadora(detalleEnvioUpdateDto.transportadora());
@@ -58,14 +59,14 @@ public class DetalleEnvioServiceImpl implements DetalleEnvioService {
     @Override
     public DetalleEnvioDto buscarDetalleEnvioById(Long id) {
         DetalleEnvio detalleEnvio = this.detalleEnvioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Los detalles del envio no existen"));
+                .orElseThrow(() -> new DetalleEnvioNotFoundException("Los detalles del envio no existen"));
         return this.detalleEnvioMapper.detalleEnvioToDetalleEnvioDto(detalleEnvio);
     }
 
     @Override
     public void removerDetalleEnvio(Long id) {
         DetalleEnvio detalleEnvio = this.detalleEnvioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Los detalles del envio no existen"));
+                .orElseThrow(() -> new DetalleEnvioNotFoundException("Los detalles del envio no existen"));
         this.detalleEnvioRepository.delete(detalleEnvio);
     }
 
@@ -77,7 +78,7 @@ public class DetalleEnvioServiceImpl implements DetalleEnvioService {
     @Override
     public DetalleEnvioDto getDetalleEnvioByPedidoId(Long id) {
         DetalleEnvio detalleEnvio = this.detalleEnvioRepository.findByPedidoId(id)
-                .orElseThrow(() -> new RuntimeException("Los detalles del envio no existen"));
+                .orElseThrow(() -> new DetalleEnvioNotFoundException("Los detalles del envio no existen"));
         return this.detalleEnvioMapper.detalleEnvioToDetalleEnvioDto(detalleEnvio);
     }
 

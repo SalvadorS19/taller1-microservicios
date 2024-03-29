@@ -5,7 +5,6 @@ import com.taller1.microservicios.dto.Pedido.PedidoToSaveDto;
 import com.taller1.microservicios.dto.Pedido.PedidoToUpdateDto;
 import com.taller1.microservicios.model.enums.EstadoPedido;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PedidoService {

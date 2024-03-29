@@ -30,6 +30,8 @@ public interface PedidoMapper {
                         pedido.getFechaPedido(),
                         pedido.getEstadoPedido(),
                         pedido.getCliente().getId(),
+                        pedido.getPago().getId(),
+                        pedido.getDetalleEnvio().getId(),
                         itemPedidoMapper.itemPedidoListToItemPedidoDtoList(pedido.getItemsPedido())
                 )
         ).toList();

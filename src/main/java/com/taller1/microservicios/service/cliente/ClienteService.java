@@ -2,7 +2,6 @@ package com.taller1.microservicios.service.cliente;
 
 import com.taller1.microservicios.dto.Cliente.ClienteDto;
 import com.taller1.microservicios.dto.Cliente.ClienteToSaveDto;
-import com.taller1.microservicios.model.Cliente;
 
 import java.util.List;
 
