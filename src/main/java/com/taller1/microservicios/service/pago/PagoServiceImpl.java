@@ -4,6 +4,7 @@ import com.taller1.microservicios.dto.pago.PagoDto;
 import com.taller1.microservicios.dto.pago.PagoMapper;
 import com.taller1.microservicios.dto.pago.PagoToSaveDto;
 import com.taller1.microservicios.dto.pago.PagoUpdateDto;
+import com.taller1.microservicios.exception.PagoNotFoundException;
 import com.taller1.microservicios.exception.PedidoNotFoundException;
 import com.taller1.microservicios.model.Pago;
 import com.taller1.microservicios.model.Pedido;
@@ -46,7 +47,7 @@ public class PagoServiceImpl implements PagoService{
     @Override
     public PagoDto actualizarPago(Long id, PagoUpdateDto pagoUpdateDto) {
         Pago pago = this.pagoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("pago no existe"));
+                .orElseThrow(() -> new PagoNotFoundException("El pago no existe"));
         pago.setMetodoPago(pagoUpdateDto.metodoPago());
         this.pagoRepository.save(pago);
         return this.pagoMapper.pagoToPagoDto(pago);

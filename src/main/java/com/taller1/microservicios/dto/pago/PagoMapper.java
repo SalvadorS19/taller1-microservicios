@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper(componentModel = "spring" )
 public interface PagoMapper {
     PagoDto pagoToPagoDto(Pago pago);
-    @Mapping(target = "fechaPago", expression = "java(java.time.localDateTime.now())")
+    @Mapping(target = "fechaPago", expression = "java(java.time.LocalDateTime.now())")
     Pago pagoToSaveDtoToPago(PagoToSaveDto pagoToSaveDto);
     List<PagoDto> pagoListToPagoDtoList(List<Pago> pago);
 }
