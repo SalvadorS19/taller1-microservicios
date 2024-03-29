@@ -1,15 +1,18 @@
 package com.taller1.microservicios.service.pago;
 
+import com.taller1.microservicios.dto.itemPedido.ItemPedidoDto;
 import com.taller1.microservicios.dto.pago.PagoDto;
 import com.taller1.microservicios.dto.pago.PagoMapper;
 import com.taller1.microservicios.dto.pago.PagoToSaveDto;
 import com.taller1.microservicios.dto.pago.PagoUpdateDto;
 import com.taller1.microservicios.exception.PagoNotFoundException;
 import com.taller1.microservicios.exception.PedidoNotFoundException;
+import com.taller1.microservicios.model.ItemPedido;
 import com.taller1.microservicios.model.Pago;
 import com.taller1.microservicios.model.Pedido;
 import com.taller1.microservicios.repository.PagoRepository;
 import com.taller1.microservicios.repository.PedidoRepository;
+import com.taller1.microservicios.service.ItemPedido.ItemPedidoService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,7 +25,6 @@ public class PagoServiceImpl implements PagoService {
     private final PagoRepository pagoRepository;
     private final PagoMapper pagoMapper;
     private final PedidoRepository pedidoRepository;
-
     public PagoServiceImpl(
             PagoRepository pagoRepository,
             PagoMapper pagoMapper,
@@ -40,9 +42,19 @@ public class PagoServiceImpl implements PagoService {
         if (pedido.getPago() != null) {
             throw new RuntimeException("El pedido ya ha sido pagado");
         }
+        List<ItemPedido> itemsPedido = pedido.getItemsPedido();
+        if (itemsPedido.isEmpty()){
+            throw new RuntimeException("El pedido no tiene productos para pagar");
+        }
         Pago pago = this.pagoMapper.pagoToSaveDtoToPago(pagoToSaveDto);
-        Pago pagoInDb = this.pagoRepository.save(pago);
-        pedido.setPago(pagoInDb);
+        pago.setPedido(pedido);
+        Double totalPago = 0.0;
+        for (ItemPedido itemPedido : itemsPedido) {
+            totalPago += (itemPedido.getPrecioUnitario() * itemPedido.getCantidad());
+        }
+        pago.setTotalPago(totalPago);
+        this.pagoRepository.save(pago);
+        pedido.setPago(pago);
         this.pedidoRepository.save(pedido);
         return this.pagoMapper.pagoToPagoDto(pago);
     }
