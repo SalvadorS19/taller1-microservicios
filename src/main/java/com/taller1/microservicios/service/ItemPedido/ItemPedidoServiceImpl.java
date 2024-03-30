@@ -37,7 +37,7 @@ public class ItemPedidoServiceImpl implements ItemPedidoService{
     }
 
     @Override
-    public ItemPedidoDto crearItemPedido(ItemPedidoToSaveDto itemPedidoToSaveDto) {
+    public ItemPedidoDto crearItemPedido(ItemPedidoToSaveDto itemPedidoToSaveDto) throws RuntimeException {
         boolean itemPedidoExists = this.itemPedidoRepository.findByProductoIdAndPedidoId(
                 itemPedidoToSaveDto.productoId(),
                 itemPedidoToSaveDto.pedidoId()
@@ -62,14 +62,14 @@ public class ItemPedidoServiceImpl implements ItemPedidoService{
     }
 
     @Override
-    public ItemPedidoDto buscarItemPedidoById(Long id) {
+    public ItemPedidoDto buscarItemPedidoById(Long id) throws ItemPedidoNotFoundException {
         ItemPedido itemPedido = this.itemPedidoRepository.findById(id)
                 .orElseThrow(() -> new ItemPedidoNotFoundException("ItemPedido no existe"));
         return this.itemPedidoMapper.ItemPedidoToItemPedidoDto(itemPedido);
     }
 
     @Override
-    public ItemPedidoDto actualizarItemPedido(Long id, ItemPedidoUpdateDto itemPedidoUpdateDto) {
+    public ItemPedidoDto actualizarItemPedido(Long id, ItemPedidoUpdateDto itemPedidoUpdateDto) throws ItemPedidoNotFoundException {
         ItemPedido itemPedido = this.itemPedidoRepository.findById(id)
                 .orElseThrow(() -> new ItemPedidoNotFoundException("ItemPedido no existe"));
         itemPedido.setCantidad(itemPedidoUpdateDto.cantidad());
@@ -78,7 +78,7 @@ public class ItemPedidoServiceImpl implements ItemPedidoService{
     }
 
     @Override
-    public void removerItemPedido(Long id) {
+    public void removerItemPedido(Long id) throws ItemPedidoNotFoundException {
         ItemPedido itemPedido = this.itemPedidoRepository.findById(id)
                 .orElseThrow(() -> new ItemPedidoNotFoundException("ItemPedido no existe"));
         itemPedidoRepository.delete(itemPedido);
@@ -97,7 +97,7 @@ public class ItemPedidoServiceImpl implements ItemPedidoService{
     }
 
     @Override
-    public Double sumaTotalVentasDeidProducto(Long idProducto) {
+    public Double sumaTotalVentasDeidProducto(Long idProducto) throws RuntimeException {
         return this.itemPedidoRepository.findTotalVentasByProducto(idProducto)
                 .orElseThrow(() -> new RuntimeException("Error calculando total"));
     }

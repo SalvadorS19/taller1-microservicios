@@ -28,7 +28,7 @@ public class ProductoServiceImpl implements ProductoService{
     }
 
     @Override
-    public ProductoDto actualizarProducto(Long id,ProductoToSaveDto productoToSaveDto) {
+    public ProductoDto actualizarProducto(Long id,ProductoToSaveDto productoToSaveDto) throws ProductoNotFoundException {
         Producto producto = this.productoRepository.findById(id)
                 .orElseThrow(() -> new ProductoNotFoundException("El producto no existe"));
         producto.setNombre(productoToSaveDto.nombre());
@@ -39,14 +39,14 @@ public class ProductoServiceImpl implements ProductoService{
     }
 
     @Override
-    public ProductoDto buscarProductoById(Long id) {
+    public ProductoDto buscarProductoById(Long id) throws ProductoNotFoundException {
         Producto producto = this.productoRepository.findById(id)
                 .orElseThrow(() -> new ProductoNotFoundException("El producto no existe"));
         return this.productoMapper.productoToProductoDto(producto);
     }
 
     @Override
-    public void removerProducto(Long id) {
+    public void removerProducto(Long id) throws ProductoNotFoundException {
         Producto producto = this.productoRepository.findById(id)
                 .orElseThrow(() -> new ProductoNotFoundException("El producto no existe"));
         productoRepository.delete(producto);

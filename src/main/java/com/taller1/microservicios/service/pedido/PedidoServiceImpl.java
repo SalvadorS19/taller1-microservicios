@@ -31,7 +31,7 @@ public class PedidoServiceImpl implements PedidoService {
         this.clienteRepository = clienteRepository;
     }
     @Override
-    public PedidoDto crearPedido(PedidoToSaveDto pedidoToSaveDto) {
+    public PedidoDto crearPedido(PedidoToSaveDto pedidoToSaveDto) throws ClienteNotFoundException {
         Cliente cliente = this.clienteRepository.findById(pedidoToSaveDto.clienteId())
                 .orElseThrow(()-> new ClienteNotFoundException("No existe el cliente"));
         Pedido pedido = this.pedidoMapper.pedidoToSaveDtoToPedido(pedidoToSaveDto);
@@ -41,7 +41,7 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public PedidoDto actualizarPedido(Long id, PedidoToUpdateDto pedidoToUpdateDto) {
+    public PedidoDto actualizarPedido(Long id, PedidoToUpdateDto pedidoToUpdateDto) throws PedidoNotFoundException {
         Pedido pedido = this.pedidoRepository.findById(id)
                 .orElseThrow(()-> new PedidoNotFoundException("No existe el pedido"));
         pedido.setEstadoPedido(pedidoToUpdateDto.estadoPedido());
@@ -50,14 +50,14 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public PedidoDto buscarPedidoById(Long id) {
+    public PedidoDto buscarPedidoById(Long id) throws PedidoNotFoundException {
         Pedido pedido = this.pedidoRepository.findById(id)
                 .orElseThrow(()-> new PedidoNotFoundException("No existe el pedido"));
         return this.pedidoMapper.pedidoToPedidoDto(pedido);
     }
 
     @Override
-    public void removerPedido(Long id) {
+    public void removerPedido(Long id) throws PedidoNotFoundException {
         Pedido pedido = this.pedidoRepository.findById(id)
                 .orElseThrow(()-> new PedidoNotFoundException("No existe el pedido"));
         this.pedidoRepository.delete(pedido);

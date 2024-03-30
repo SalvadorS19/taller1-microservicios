@@ -34,7 +34,7 @@ public class PagoServiceImpl implements PagoService {
     }
 
     @Override
-    public PagoDto crearPago(PagoToSaveDto pagoToSaveDto) {
+    public PagoDto crearPago(PagoToSaveDto pagoToSaveDto) throws RuntimeException {
         Pedido pedido = this.pedidoRepository.findById(pagoToSaveDto.pedidoId())
                 .orElseThrow(() -> new PedidoNotFoundException("No existe el pedido a pagar"));
         if (pedido.getPago() != null) {
@@ -58,7 +58,7 @@ public class PagoServiceImpl implements PagoService {
     }
 
     @Override
-    public PagoDto actualizarPago(Long id, PagoUpdateDto pagoUpdateDto) {
+    public PagoDto actualizarPago(Long id, PagoUpdateDto pagoUpdateDto) throws PagoNotFoundException {
         Pago pago = this.pagoRepository.findById(id)
                 .orElseThrow(() -> new PagoNotFoundException("El pago no existe"));
         pago.setMetodoPago(pagoUpdateDto.metodoPago());
@@ -67,14 +67,14 @@ public class PagoServiceImpl implements PagoService {
     }
 
     @Override
-    public PagoDto buscarPagoById(Long id) {
+    public PagoDto buscarPagoById(Long id) throws PagoNotFoundException {
         Pago pago = this.pagoRepository.findById(id)
                 .orElseThrow(() -> new PagoNotFoundException("El pago no existe"));
         return this.pagoMapper.pagoToPagoDto(pago);
     }
 
     @Override
-    public void removerPago(Long id) {
+    public void removerPago(Long id) throws PagoNotFoundException {
         Pago pago = this.pagoRepository.findById(id)
                 .orElseThrow(() -> new PagoNotFoundException("El pago no existe"));
         this.pagoRepository.delete(pago);
@@ -96,7 +96,7 @@ public class PagoServiceImpl implements PagoService {
     }
 
     @Override
-    public PagoDto buscarPagoByPedidoId(Long pedidoId) {
+    public PagoDto buscarPagoByPedidoId(Long pedidoId) throws PagoNotFoundException {
         Pago pago = this.pagoRepository.findByPedidoId(pedidoId)
                 .orElseThrow(() -> new PagoNotFoundException("El pago no existe"));
         return this.pagoMapper.pagoToPagoDto(pago);
