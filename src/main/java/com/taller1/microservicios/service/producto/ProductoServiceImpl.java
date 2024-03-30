@@ -60,7 +60,7 @@ public class ProductoServiceImpl implements ProductoService{
 
     @Override
     public List<ProductoDto> buscarProductoByTermino(String termino) {
-        List<Producto> productos = this.productoRepository.findByNombreContaining(termino);
+        List<Producto> productos = this.productoRepository.findByNombreContainingIgnoreCase(termino);
         return this.productoMapper.productosListToProductosDtoList(productos);
     }
 

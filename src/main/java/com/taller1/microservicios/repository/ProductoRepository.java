@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
-    List<Producto> findByNombreContaining(String nombre);
+    List<Producto> findByNombreContainingIgnoreCase(String nombre);
 
     @Query("select p from Producto p where p.stock >= 1")
     List<Producto> findByInStock();

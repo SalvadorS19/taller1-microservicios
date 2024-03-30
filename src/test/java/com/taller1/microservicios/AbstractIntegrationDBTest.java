@@ -13,5 +13,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class AbstractIntegrationDBTest {
     @Container
     @ServiceConnection
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15-alpine");
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15-alpine")
+            .withDatabaseName("taller1_testdb")
+            .withUsername("root")
+            .withPassword("root");
 }
