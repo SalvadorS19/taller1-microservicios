@@ -40,7 +40,8 @@ public class ItemPedidoServiceImpl implements ItemPedidoService{
     public ItemPedidoDto crearItemPedido(ItemPedidoToSaveDto itemPedidoToSaveDto) {
         boolean itemPedidoExists = this.itemPedidoRepository.findByProductoIdAndPedidoId(
                 itemPedidoToSaveDto.productoId(),
-                itemPedidoToSaveDto.pedidoId()).isPresent();
+                itemPedidoToSaveDto.pedidoId()
+        ).isPresent();
         if (itemPedidoExists) throw new RuntimeException("El item pedido ya existe");
         Pedido pedido = this.pedidoRepository.findById(itemPedidoToSaveDto.pedidoId())
                 .orElseThrow(() -> new PedidoNotFoundException("El pedido no existe"));
