@@ -36,7 +36,7 @@ public class PedidoServiceImpl implements PedidoService {
                 .orElseThrow(()-> new ClienteNotFoundException("No existe el cliente"));
         Pedido pedido = this.pedidoMapper.pedidoToSaveDtoToPedido(pedidoToSaveDto);
         pedido.setCliente(cliente);
-        this.pedidoRepository.save(pedido);
+        pedido = this.pedidoRepository.save(pedido);
         return this.pedidoMapper.pedidoToPedidoDto(pedido);
     }
 
@@ -45,7 +45,7 @@ public class PedidoServiceImpl implements PedidoService {
         Pedido pedido = this.pedidoRepository.findById(id)
                 .orElseThrow(()-> new PedidoNotFoundException("No existe el pedido"));
         pedido.setEstadoPedido(pedidoToUpdateDto.estadoPedido());
-        this.pedidoRepository.save(pedido);
+        pedido = this.pedidoRepository.save(pedido);
         return this.pedidoMapper.pedidoToPedidoDto(pedido);
     }
 

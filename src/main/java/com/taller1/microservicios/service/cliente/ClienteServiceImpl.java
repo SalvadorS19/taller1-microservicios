@@ -25,7 +25,7 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public ClienteDto crearCliente(ClienteToSaveDto clienteToSaveDto) {
         Cliente cliente = this.clienteMapper.clienteToSaveDtoToCliente(clienteToSaveDto);
-        this.clienteRepository.save(cliente);
+        cliente = this.clienteRepository.save(cliente);
         return this.clienteMapper.clienteToClienteDto(cliente);
     }
 
@@ -36,7 +36,7 @@ public class ClienteServiceImpl implements ClienteService {
         clienteInDb.setNombre(clienteToSaveDto.nombre());
         clienteInDb.setEmail(clienteToSaveDto.email());
         clienteInDb.setDireccion(clienteToSaveDto.direccion());
-        clienteRepository.save(clienteInDb);
+        clienteInDb = clienteRepository.save(clienteInDb);
         return this.clienteMapper.clienteToClienteDto(clienteInDb);
     }
 

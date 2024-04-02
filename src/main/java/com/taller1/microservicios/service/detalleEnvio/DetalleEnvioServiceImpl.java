@@ -42,7 +42,7 @@ public class DetalleEnvioServiceImpl implements DetalleEnvioService {
         detalleEnvio.setNumeroGuia(numeroGuia);
         detalleEnvio.setPedido(pedido);
         detalleEnvio.setEstadoEnvio(EstadoEnvio.ENVIADO);
-        this.detalleEnvioRepository.save(detalleEnvio);
+        detalleEnvio = this.detalleEnvioRepository.save(detalleEnvio);
         pedido.setDetalleEnvio(detalleEnvio);
         this.pedidoRepository.save(pedido);
         return this.detalleEnvioMapper.detalleEnvioToDetalleEnvioDto(detalleEnvio);
@@ -55,7 +55,7 @@ public class DetalleEnvioServiceImpl implements DetalleEnvioService {
         detalleEnvio.setDireccion(detalleEnvioUpdateDto.direccion());
         detalleEnvio.setEstadoEnvio(detalleEnvioUpdateDto.estadoEnvio());
         detalleEnvio.setTransportadora(detalleEnvioUpdateDto.transportadora());
-        this.detalleEnvioRepository.save(detalleEnvio);
+        detalleEnvio = this.detalleEnvioRepository.save(detalleEnvio);
         return this.detalleEnvioMapper.detalleEnvioToDetalleEnvioDto(detalleEnvio);
     }
 

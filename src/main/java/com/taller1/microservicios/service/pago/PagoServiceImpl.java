@@ -51,7 +51,7 @@ public class PagoServiceImpl implements PagoService {
             totalPago += (itemPedido.getPrecioUnitario() * itemPedido.getCantidad());
         }
         pago.setTotalPago(totalPago);
-        this.pagoRepository.save(pago);
+        pago = this.pagoRepository.save(pago);
         pedido.setPago(pago);
         this.pedidoRepository.save(pedido);
         return this.pagoMapper.pagoToPagoDto(pago);
@@ -62,7 +62,7 @@ public class PagoServiceImpl implements PagoService {
         Pago pago = this.pagoRepository.findById(id)
                 .orElseThrow(() -> new PagoNotFoundException("El pago no existe"));
         pago.setMetodoPago(pagoUpdateDto.metodoPago());
-        this.pagoRepository.save(pago);
+        pago = this.pagoRepository.save(pago);
         return this.pagoMapper.pagoToPagoDto(pago);
     }
 

@@ -23,7 +23,7 @@ public class ProductoServiceImpl implements ProductoService{
     @Override
     public ProductoDto crearProducto(ProductoToSaveDto productoToSaveDto) {
         Producto producto = this.productoMapper.productoToSaveDtoToProducto(productoToSaveDto);
-        productoRepository.save(producto);
+        producto = productoRepository.save(producto);
         return this.productoMapper.productoToProductoDto(producto);
     }
 
@@ -34,7 +34,7 @@ public class ProductoServiceImpl implements ProductoService{
         producto.setNombre(productoToSaveDto.nombre());
         producto.setPrecio(productoToSaveDto.precio());
         producto.setStock(productoToSaveDto.stock());
-        productoRepository.save(producto);
+        producto = productoRepository.save(producto);
         return this.productoMapper.productoToProductoDto(producto);
     }
 

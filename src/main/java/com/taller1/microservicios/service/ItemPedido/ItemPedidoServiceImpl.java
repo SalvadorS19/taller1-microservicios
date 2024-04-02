@@ -51,7 +51,7 @@ public class ItemPedidoServiceImpl implements ItemPedidoService{
         itemPedido.setPedido(pedido);
         itemPedido.setProducto(producto);
         itemPedido.setPrecioUnitario(producto.getPrecio());
-        itemPedidoRepository.save(itemPedido);
+        itemPedido = itemPedidoRepository.save(itemPedido);
         return this.itemPedidoMapper.ItemPedidoToItemPedidoDto(itemPedido);
     }
 
@@ -73,7 +73,7 @@ public class ItemPedidoServiceImpl implements ItemPedidoService{
         ItemPedido itemPedido = this.itemPedidoRepository.findById(id)
                 .orElseThrow(() -> new ItemPedidoNotFoundException("ItemPedido no existe"));
         itemPedido.setCantidad(itemPedidoUpdateDto.cantidad());
-        itemPedidoRepository.save(itemPedido);
+        itemPedido = itemPedidoRepository.save(itemPedido);
         return this.itemPedidoMapper.ItemPedidoToItemPedidoDto(itemPedido);
     }
 
