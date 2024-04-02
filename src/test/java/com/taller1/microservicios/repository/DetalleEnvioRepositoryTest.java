@@ -1,7 +1,10 @@
 package com.taller1.microservicios.repository;
 
 import com.taller1.microservicios.AbstractIntegrationDBTest;
+import com.taller1.microservicios.model.Cliente;
 import com.taller1.microservicios.model.DetalleEnvio;
+import com.taller1.microservicios.model.Pago;
+import com.taller1.microservicios.model.Pedido;
 import com.taller1.microservicios.model.enums.EstadoEnvio;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +20,10 @@ public class DetalleEnvioRepositoryTest extends AbstractIntegrationDBTest {
 
     @Autowired
     private DetalleEnvioRepository detalleEnvioRepository;
+    @Autowired
+    private PedidoRepository pedidoRepository;
+    @Autowired
+    private ClienteRepository clienteRepository;
 
     @BeforeEach
     void setUp() {
@@ -24,11 +31,19 @@ public class DetalleEnvioRepositoryTest extends AbstractIntegrationDBTest {
     }
 
     DetalleEnvio getDetalleEnvioMock() {
+
+        Cliente cliente = Cliente.builder().build();
+        cliente = clienteRepository.save(cliente);
+
+        Pedido pedido = Pedido.builder().cliente(cliente).build();
+        pedido = pedidoRepository.save(pedido);
+
         return DetalleEnvio.builder()
                 .direccion("Calle 123")
                 .transportadora("Deprisa")
                 .estadoEnvio(EstadoEnvio.ENVIADO)
                 .numeroGuia("ENV-2024312")
+                .pedido(pedido)
                 .build();
     }
     List<DetalleEnvio> getDetalleEnvioListMock() {
@@ -157,5 +172,16 @@ public class DetalleEnvioRepositoryTest extends AbstractIntegrationDBTest {
         }
     }
 
-    // FALTA CREAR POR PEDIDO ID
+    @Test
+    @DisplayName("Buscar detalleEnvio por idpedido")
+    void givenIdPedido_whenfindByPedidoId_thenDetalleEnvio(){
+        //Given
+        DetalleEnvio detalleEnvio = detalleEnvioRepository.save(getDetalleEnvioMock());
+        Long idPedido = detalleEnvio.getPedido().getId();
+        //When
+        Optional<DetalleEnvio> foundDetalleEnvio = detalleEnvioRepository.findByPedidoId(idPedido);
+        //Then
+        Assertions.assertTrue(foundDetalleEnvio.isPresent());
+    }
+
 }

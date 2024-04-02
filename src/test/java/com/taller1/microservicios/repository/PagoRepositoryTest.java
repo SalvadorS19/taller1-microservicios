@@ -1,7 +1,11 @@
 package com.taller1.microservicios.repository;
 
 import com.taller1.microservicios.AbstractIntegrationDBTest;
+import com.taller1.microservicios.model.Cliente;
+import com.taller1.microservicios.model.ItemPedido;
 import com.taller1.microservicios.model.Pago;
+import com.taller1.microservicios.model.Pedido;
+import com.taller1.microservicios.model.enums.EstadoPedido;
 import com.taller1.microservicios.model.enums.MetodoPago;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +23,11 @@ public class PagoRepositoryTest extends AbstractIntegrationDBTest {
 
     @Autowired
     private PagoRepository pagoRepository;
+    @Autowired
+    private PedidoRepository pedidoRepository;
+    @Autowired
+    private ClienteRepository clienteRepository;
+
 
     @BeforeEach
     void setUp() {
@@ -26,11 +35,21 @@ public class PagoRepositoryTest extends AbstractIntegrationDBTest {
     }
 
     Pago getPagoMock() {
+
+        Cliente cliente = Cliente.builder().build();
+        cliente = clienteRepository.save(cliente);
+
+        Pedido pedido = Pedido.builder().cliente(cliente).build();
+        pedido = pedidoRepository.save(pedido);
+
         return Pago.builder()
+                .id(1L)
                 .fechaPago(LocalDateTime.of(2024,Month.MARCH,29,12,0))
                 .totalPago(2000d)
                 .metodoPago(MetodoPago.PSE)
+                .pedido(pedido)
                 .build();
+
     }
 
     List<Pago> getPagoListMock() {
@@ -140,5 +159,16 @@ public class PagoRepositoryTest extends AbstractIntegrationDBTest {
         }
     }
 
-    // FALTA HACER POR PEDIDO ID
+    @Test
+    @DisplayName("Buscar por idpedido")
+    void given(){
+        //Given
+        Pago pago = pagoRepository.save(getPagoMock());
+        Long idPedido = pago.getPedido().getId();
+        //When
+        Optional<Pago> foundPago = pagoRepository.findByPedidoId(idPedido);
+        //Then
+        Assertions.assertTrue(foundPago.isPresent());
+    }
+
 }

@@ -172,4 +172,7 @@ public class ProductoRepositoryTest extends AbstractIntegrationDBTest {
             Assertions.assertTrue(producto.getPrecio() <= precioMaximo);
         }
     }
+
+
+
 }

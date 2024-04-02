@@ -1,7 +1,7 @@
 package com.taller1.microservicios.repository;
 
 import com.taller1.microservicios.AbstractIntegrationDBTest;
-import com.taller1.microservicios.model.ItemPedido;
+import com.taller1.microservicios.model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,12 +16,27 @@ public class ItemPedidoRepositoryTest extends AbstractIntegrationDBTest {
 
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
+    @Autowired
+    private PedidoRepository pedidoRepository;
+    @Autowired
+    private ClienteRepository clienteRepository;
+    @Autowired
+    private ProductoRepository productoRepository;
 
     @BeforeEach
     void setUp() {
         itemPedidoRepository.deleteAll();
     }
 
+    Producto getProductoMock(){
+        return  Producto.builder().build();
+    }
+    Pedido getPedidoMock(){
+        Cliente cliente = Cliente.builder().build();
+        cliente = clienteRepository.save(cliente);
+
+        return  Pedido.builder().cliente(cliente).build();
+    }
     ItemPedido getItemPedidoMock() {
         return ItemPedido.builder()
                 .cantidad(10)
@@ -29,15 +44,26 @@ public class ItemPedidoRepositoryTest extends AbstractIntegrationDBTest {
                 .build();
     }
     List<ItemPedido> getItemPedidoListMock() {
+
+        Producto producto= getProductoMock();
+        producto= productoRepository.save(producto);
+
+        Pedido pedido = getPedidoMock();
+        pedido= pedidoRepository.save(pedido);
+
         List<ItemPedido> itemPedidos = new ArrayList<>();
         itemPedidos.add(ItemPedido.builder()
-                .cantidad(10)
-                .precioUnitario(2000d)
+                .cantidad(11)
+                .precioUnitario(4000d)
+                .pedido(pedido)
+                .producto(producto)
                 .build()
         );
         itemPedidos.add(ItemPedido.builder()
-                .cantidad(10)
-                .precioUnitario(2000d)
+                .cantidad(12)
+                .precioUnitario(300d)
+                .pedido(pedido)
+                .producto(producto)
                 .build()
         );
         return itemPedidos;
@@ -112,5 +138,28 @@ public class ItemPedidoRepositoryTest extends AbstractIntegrationDBTest {
         Assertions.assertEquals(itemPedidoUpdated.getPrecioUnitario(), nuevoPrecioUnitario);
     }
 
-    // TOCA HACER LOS PERSONALIZADOS
+    @Test
+    @DisplayName("Buscar ItemPedidos por idpedido")
+    void givenIdPedido_whenFindByProductoId_ThenItemPedidos(){
+        //Given
+        itemPedidoRepository.saveAll(getItemPedidoListMock());
+        Long idPedido = 1L;
+        //When
+        List<ItemPedido> foundItemPedidos = itemPedidoRepository.findByPedidoId(idPedido);
+        //Then
+        Assertions.assertFalse(foundItemPedidos.isEmpty());
+    }
+
+    @Test
+    @DisplayName("Buscar ItemPedidos por idproducto")
+    void givenIdProducto_whenFindByProductoId_ThenItemPedidos(){
+        //Given
+        itemPedidoRepository.saveAll(getItemPedidoListMock());
+        Long idProducto = 1L;
+        //When
+        List<ItemPedido> foundItemPedidos = itemPedidoRepository.findByProductoId(idProducto);
+        //Then
+        Assertions.assertFalse(foundItemPedidos.isEmpty());
+    }
+
 }

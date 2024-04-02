@@ -1,6 +1,8 @@
 package com.taller1.microservicios.repository;
 
 import com.taller1.microservicios.AbstractIntegrationDBTest;
+import com.taller1.microservicios.model.Cliente;
+import com.taller1.microservicios.model.ItemPedido;
 import com.taller1.microservicios.model.Pedido;
 import com.taller1.microservicios.model.enums.EstadoPedido;
 import org.junit.jupiter.api.Assertions;
@@ -20,6 +22,10 @@ public class PedidoRepositoryTest extends AbstractIntegrationDBTest {
     
     @Autowired
     private PedidoRepository pedidoRepository;
+    @Autowired
+    private ClienteRepository clienteRepository;
+    @Autowired
+    private ItemPedidoRepository itemPedidoRepository;
 
     @BeforeEach
     void setUp() { pedidoRepository.deleteAll(); }
@@ -32,15 +38,33 @@ public class PedidoRepositoryTest extends AbstractIntegrationDBTest {
     }
 
     List<Pedido> getPedidoListMock() {
+        List<ItemPedido> itemPedidos = new ArrayList<>();
+        itemPedidos.add(ItemPedido.builder().build());
+        itemPedidos.add(ItemPedido.builder().build());
+
+        itemPedidos = itemPedidoRepository.saveAll(itemPedidos);
+
+        Cliente cliente = Cliente.builder().build();
+        cliente = clienteRepository.save(cliente);
+
         List<Pedido> pedidos = new ArrayList<>();
         pedidos.add(Pedido.builder()
                 .fechaPedido(LocalDateTime.of(2024, Month.MARCH, 25, 12, 0))
                 .estadoPedido(EstadoPedido.PENDIENTE)
+                .cliente(cliente)
+                .itemsPedido(itemPedidos)
+                .build()
+        );
+        pedidos.add(Pedido.builder()
+                .fechaPedido(LocalDateTime.of(2024, Month.FEBRUARY, 25, 12, 0))
+                .estadoPedido(EstadoPedido.PENDIENTE)
+                .cliente(cliente)
                 .build()
         );
         pedidos.add(Pedido.builder()
                 .fechaPedido(LocalDateTime.of(2024, Month.MARCH, 25, 12, 0))
-                .estadoPedido(EstadoPedido.PENDIENTE)
+                .estadoPedido(EstadoPedido.ENVIADO)
+                .cliente(cliente)
                 .build()
         );
         return pedidos;
@@ -132,6 +156,29 @@ public class PedidoRepositoryTest extends AbstractIntegrationDBTest {
         }
     }
 
-    // TOCA CREAR EL DE BUSCAR POR CLIENTE Y ESTADO
-    // TOCA CREAR EL DE BUSCAR POR CLIENTE CON PRODUCTOS
+    @Test
+    @DisplayName("Buscar pedido por idcliente y estado del pedido")
+        void givenIdCLienteAndStatus_WhenFindIdClienteAndStatus_thenPedidos(){
+        //Given
+        pedidoRepository.saveAll(getPedidoListMock());
+        Long idCliente = 1L;
+        EstadoPedido estado = EstadoPedido.ENVIADO;
+        //When
+        List<Pedido> foundPedidos = pedidoRepository.findByClienteIdAndEstadoPedido(idCliente, estado);
+        //Then
+        Assertions.assertFalse(foundPedidos.isEmpty());
+    }
+
+    @Test
+    @DisplayName("Buscar pedido por idcliente y estado del pedido")
+    void givenIdCLiente_WhenFindIdClienteConProductos_thenPedidos(){
+        //Given
+        pedidoRepository.saveAll(getPedidoListMock());
+        Long idCliente = 1L;
+        //When
+        List<Pedido> foundPedidos = pedidoRepository.findPedidoConProductosByCliente(idCliente);
+        //Then
+        Assertions.assertFalse(foundPedidos.isEmpty());
+    }
+
 }
