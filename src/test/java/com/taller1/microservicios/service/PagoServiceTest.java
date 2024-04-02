@@ -21,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +29,6 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class PagoServiceTest {
@@ -65,7 +65,7 @@ public class PagoServiceTest {
                 .fechaPago(LocalDateTime.of(2024, Month.MARCH,29,12,0))
                 .totalPago(2000d)
                 .metodoPago(MetodoPago.PSE)
-                .pedido(Pedido.builder().id(1L).build())
+                .pedido(this.pedido)
                 .build();
     }
 
@@ -173,7 +173,7 @@ public class PagoServiceTest {
         given(pagoRepository.findAll()).willReturn(pagos);
         given(pagoMapper.pagoListToPagoDtoList(any())).willReturn(pagoDtos);
         List<PagoDto> pagosDtosService = pagoService.getAllPagos();
-        Assertions.assertNotNull(pagosDtosService);
+        Assertions.assertFalse(pagosDtosService.isEmpty());
         Assertions.assertEquals(pagosDtosService.size(), 2);
     }
 
@@ -185,5 +185,50 @@ public class PagoServiceTest {
         doNothing().when(pagoRepository).delete(pago);
         pagoService.removerPago(pagoId);
         Assertions.assertAll(() -> pagoService.removerPago(pagoId));
+    }
+
+    @Test
+    void whenFindByRangoFechaPago_returnPagoDtoList() {
+        String fechaInicioStr = "2024-01-01 12:00";
+        String fechaFinStr = "2024-06-30 12:00";
+        List<Pago> pagosMock = getPagoListMock();
+        List<PagoDto> pagosDtoMock = pagosMock.stream().map(pago ->
+                new PagoDto(
+                        pago.getId(),
+                        pago.getTotalPago(),
+                        pago.getFechaPago(),
+                        pago.getMetodoPago(),
+                        this.pedido.getId()
+                )
+        ).toList();
+        given(pagoRepository.findByFechaPagoIsBetween(any(LocalDateTime.class), any(LocalDateTime.class))).willReturn(pagosMock);
+        given(pagoMapper.pagoListToPagoDtoList(any())).willReturn(pagosDtoMock);
+        List<PagoDto> foundPagos = pagoService.buscarPagosByRangoFecha(fechaInicioStr, fechaFinStr);
+        Assertions.assertFalse(foundPagos.isEmpty());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        for(PagoDto pago : foundPagos) {
+            LocalDateTime fechaPago = pago.fechaPago();
+            LocalDateTime fechaInicio = LocalDateTime.parse(fechaInicioStr, formatter);
+            LocalDateTime fechaFin = LocalDateTime.parse(fechaFinStr, formatter);
+            Assertions.assertTrue(fechaPago.isAfter(fechaInicio) && fechaPago.isBefore(fechaFin));
+        }
+    }
+
+    @Test
+    void whenFindByPedidoId_returnPagoDto() {
+        Long pedidoId = this.pedido.getId();
+        Pago pagoMock = getPagoMock();
+        PagoDto pagoDto = new PagoDto(
+                pagoMock.getId(),
+                pagoMock.getTotalPago(),
+                pagoMock.getFechaPago(),
+                pagoMock.getMetodoPago(),
+                pagoMock.getPedido().getId()
+        );
+        given(pagoRepository.findByPedidoId(any())).willReturn(Optional.of(pagoMock));
+        given(pagoMapper.pagoToPagoDto(any())).willReturn(pagoDto);
+        PagoDto foundPago = pagoService.buscarPagoByPedidoId(pedidoId);
+        Assertions.assertNotNull(foundPago);
+        Assertions.assertEquals(foundPago.id(), pedidoId);
     }
 }

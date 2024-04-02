@@ -1,9 +1,8 @@
 package com.taller1.microservicios.service;
 
+import com.taller1.microservicios.dto.itemPedido.ItemPedidoDto;
+import com.taller1.microservicios.dto.pedido.*;
 import com.taller1.microservicios.dto.pedido.PedidoDto;
-import com.taller1.microservicios.dto.pedido.PedidoMapper;
-import com.taller1.microservicios.dto.pedido.PedidoToSaveDto;
-import com.taller1.microservicios.dto.pedido.PedidoToUpdateDto;
 import com.taller1.microservicios.model.*;
 import com.taller1.microservicios.model.enums.EstadoPedido;
 import com.taller1.microservicios.repository.ClienteRepository;
@@ -19,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -176,7 +176,7 @@ public class PedidoServiceTest {
         given(pedidoRepository.findAll()).willReturn(pedidos);
         given(pedidoMapper.pedidoListToPedidoDtoList(any())).willReturn(pedidoDtos);
         List<PedidoDto> pedidosDtosService = pedidoService.getAllPedidos();
-        Assertions.assertNotNull(pedidosDtosService);
+        Assertions.assertFalse(pedidosDtosService.isEmpty());
         Assertions.assertEquals(pedidosDtosService.size(), 2);
     }
 
@@ -188,5 +188,91 @@ public class PedidoServiceTest {
         doNothing().when(pedidoRepository).delete(pedido);
         pedidoService.removerPedido(pedidoId);
         Assertions.assertAll(() -> pedidoService.removerPedido(pedidoId));
+    }
+
+    @Test
+    void whenFindByRangoFechaPedido_returnPedidoDtoList() {
+        String fechaInicioStr = "2024-01-01 12:00";
+        String fechaFinStr = "2024-06-30 12:00";
+        List<Pedido> pedidosMock = getPedidoListMock();
+        List<PedidoDto> pedidosDtoMock = pedidosMock.stream().map(pedido ->
+                new PedidoDto(
+                        pedido.getId(),
+                        pedido.getFechaPedido(),
+                        pedido.getEstadoPedido(),
+                        this.cliente.getId(),
+                        this.pago.getId(),
+                        this.detalleEnvio.getId()
+                )
+        ).toList();
+        given(pedidoRepository.findByFechaPedidoBetween(any(LocalDateTime.class), any(LocalDateTime.class))).willReturn(pedidosMock);
+        given(pedidoMapper.pedidoListToPedidoDtoList(any())).willReturn(pedidosDtoMock);
+        List<PedidoDto> foundPedidos = pedidoService.buscarPedidosByRangoFechas(fechaInicioStr, fechaFinStr);
+        Assertions.assertFalse(foundPedidos.isEmpty());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        for(PedidoDto pedido : foundPedidos) {
+            LocalDateTime fechaPedido = pedido.fechaPedido();
+            LocalDateTime fechaInicio = LocalDateTime.parse(fechaInicioStr, formatter);
+            LocalDateTime fechaFin = LocalDateTime.parse(fechaFinStr, formatter);
+            Assertions.assertTrue(fechaPedido.isAfter(fechaInicio) && fechaPedido.isBefore(fechaFin));
+        }
+    }
+
+    @Test
+    void whenFindByClienteId_returnPedidoDto() {
+        Long clienteId = 1L;
+        EstadoPedido estadoPedido = EstadoPedido.PENDIENTE;
+        List<Pedido> pedidoListMock = getPedidoListMock();
+        List<PedidoDto> pedidoDtoListMock = pedidoListMock.stream().map(pedido ->
+                new PedidoDto(
+                        pedido.getId(),
+                        pedido.getFechaPedido(),
+                        pedido.getEstadoPedido(),
+                        this.cliente.getId(),
+                        this.pago.getId(),
+                        this.detalleEnvio.getId()
+                )
+        ).toList();
+        given(pedidoRepository.findByClienteIdAndEstadoPedido(clienteId, estadoPedido)).willReturn(pedidoListMock);
+        given(pedidoMapper.pedidoListToPedidoDtoList(any())).willReturn(pedidoDtoListMock);
+        List<PedidoDto> foundPedido = pedidoService.buscarPedidoByClienteIdAndEstado(clienteId, estadoPedido);
+        Assertions.assertFalse(foundPedido.isEmpty());
+        for (PedidoDto pedidoDto : foundPedido) {
+            Assertions.assertEquals(pedidoDto.clienteId(), clienteId);
+            Assertions.assertEquals(pedidoDto.estadoPedido(), estadoPedido);
+        }
+    }
+
+    @Test
+    void whenFindByClienteId_returnPedidoProductosDto() {
+        Long clienteId = 1L;
+        List<Pedido> pedidoListMock = getPedidoListMock();
+        List<ItemPedidoDto> itemPedidoDtos = this.itemsPedido.stream().map(itemPedido ->
+                new ItemPedidoDto(
+                        itemPedido.getId(),
+                        itemPedido.getCantidad(),
+                        itemPedido.getPrecioUnitario(),
+                        1L,
+                        1L
+                )
+        ).toList();
+        List<PedidoProductosDto> pedidoDtoListMock = pedidoListMock.stream().map(pedido ->
+                new PedidoProductosDto(
+                        pedido.getId(),
+                        pedido.getFechaPedido(),
+                        pedido.getEstadoPedido(),
+                        this.cliente.getId(),
+                        this.pago.getId(),
+                        this.detalleEnvio.getId(),
+                        itemPedidoDtos
+                )
+        ).toList();
+        given(pedidoRepository.findPedidoConProductosByCliente(clienteId)).willReturn(pedidoListMock);
+        given(pedidoMapper.pedidoListToPedidoProductosListDto(any())).willReturn(pedidoDtoListMock);
+        List<PedidoProductosDto> foundPedido = pedidoService.buscarPedidosConProductos(clienteId);
+        Assertions.assertFalse(foundPedido.isEmpty());
+        for (PedidoProductosDto pedidoDto : foundPedido) {
+            Assertions.assertEquals(pedidoDto.clienteId(), clienteId);
+        }
     }
 }

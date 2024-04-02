@@ -34,7 +34,7 @@ public class DetalleEnvioServiceTest {
     private DetalleEnvioRepository detalleEnvioRepository;
     @Mock
     private PedidoRepository pedidoRepository;
-    
+
     @Mock
     private DetalleEnvioMapper detalleEnvioMapper;
 
@@ -67,6 +67,7 @@ public class DetalleEnvioServiceTest {
                 .transportadora("Deprisa")
                 .estadoEnvio(EstadoEnvio.ENVIADO)
                 .numeroGuia("ENV-2024312")
+                .pedido(this.pedido)
                 .build();
     }
     List<DetalleEnvio> getDetalleEnvioListMock() {
@@ -183,7 +184,7 @@ public class DetalleEnvioServiceTest {
         given(detalleEnvioRepository.findAll()).willReturn(detalleEnvios);
         given(detalleEnvioMapper.detalleEnvioListToDetalleEnvioDtoList(any())).willReturn(detalleEnvioDtos);
         List<DetalleEnvioDto> detalleEnviosDtosService = detalleEnvioService.getAllDetalleEnvio();
-        Assertions.assertNotNull(detalleEnviosDtosService);
+        Assertions.assertFalse(detalleEnviosDtosService.isEmpty());
         Assertions.assertEquals(detalleEnviosDtosService.size(), 2);
     }
 
@@ -195,5 +196,74 @@ public class DetalleEnvioServiceTest {
         doNothing().when(detalleEnvioRepository).delete(detalleEnvio);
         detalleEnvioService.removerDetalleEnvio(detalleEnvioId);
         Assertions.assertAll(() -> detalleEnvioService.removerDetalleEnvio(detalleEnvioId));
+    }
+    @Test
+    void whenFindByPedidoId_returnDetalleEnvioDto() {
+        Long pedidoId = 1L;
+        DetalleEnvio detalleEnvioMock = getDetalleEnvioMock();
+        DetalleEnvioDto detalleEnvioDto = new DetalleEnvioDto(
+                detalleEnvioMock.getId(),
+                detalleEnvioMock.getDireccion(),
+                detalleEnvioMock.getTransportadora(),
+                detalleEnvioMock.getEstadoEnvio(),
+                detalleEnvioMock.getNumeroGuia(),
+                this.pedido.getId()
+        );
+        given(detalleEnvioRepository.findById(pedidoId)).willReturn(Optional.of(detalleEnvioMock));
+        given(detalleEnvioMapper.detalleEnvioToDetalleEnvioDto(any(DetalleEnvio.class))).willReturn(detalleEnvioDto);
+        DetalleEnvioDto foundDetalleEnvio = detalleEnvioService.buscarDetalleEnvioById(pedidoId);
+        Assertions.assertNotNull(foundDetalleEnvio);
+        Assertions.assertEquals(foundDetalleEnvio.pedidoId(), pedidoId);
+    }
+    @Test
+    void whenFindByTransportadora_returnDetalleEnvioDtoList() {
+        String transportadora = "Deprisa";
+        List<DetalleEnvio> detalleEnvios = getDetalleEnvioListMock();
+        List<DetalleEnvioDto> detalleEnvioDtos = new ArrayList<>();
+        for (DetalleEnvio detalleEnvio : detalleEnvios) {
+            if (detalleEnvio.getTransportadora().equals(transportadora)) {
+                detalleEnvioDtos.add(new DetalleEnvioDto(
+                        detalleEnvio.getId(),
+                        detalleEnvio.getDireccion(),
+                        detalleEnvio.getTransportadora(),
+                        detalleEnvio.getEstadoEnvio(),
+                        detalleEnvio.getNumeroGuia(),
+                        this.pedido.getId()
+                ));
+            }
+        }
+        given(detalleEnvioRepository.findByTransportadora(transportadora)).willReturn(detalleEnvios);
+        given(detalleEnvioMapper.detalleEnvioListToDetalleEnvioDtoList(any())).willReturn(detalleEnvioDtos);
+        List<DetalleEnvioDto> foundDetalleEnvios = detalleEnvioService.getDetalleEnviosByTransportadora(transportadora);
+        Assertions.assertFalse(foundDetalleEnvios.isEmpty());
+        for (DetalleEnvioDto detalleEnvioDto : foundDetalleEnvios) {
+            Assertions.assertEquals(detalleEnvioDto.transportadora(), transportadora);
+        }
+    }
+
+    @Test
+    void whenFindByEstado_returnDetalleEnvioDtoList() {
+        EstadoEnvio estadoEnvio = EstadoEnvio.ENVIADO;
+        List<DetalleEnvio> detalleEnvios = getDetalleEnvioListMock();
+        List<DetalleEnvioDto> detalleEnvioDtos = new ArrayList<>();
+        for (DetalleEnvio detalleEnvio : detalleEnvios) {
+            if (detalleEnvio.getEstadoEnvio().equals(estadoEnvio)) {
+                detalleEnvioDtos.add(new DetalleEnvioDto(
+                        detalleEnvio.getId(),
+                        detalleEnvio.getDireccion(),
+                        detalleEnvio.getTransportadora(),
+                        detalleEnvio.getEstadoEnvio(),
+                        detalleEnvio.getNumeroGuia(),
+                        this.pedido.getId()
+                ));
+            }
+        }
+        given(detalleEnvioRepository.findByEstadoEnvio(estadoEnvio)).willReturn(detalleEnvios);
+        given(detalleEnvioMapper.detalleEnvioListToDetalleEnvioDtoList(any())).willReturn(detalleEnvioDtos);
+        List<DetalleEnvioDto> foundDetalleEnvios = detalleEnvioService.getDetalleEnviosByEstado(estadoEnvio);
+        Assertions.assertFalse(foundDetalleEnvios.isEmpty());
+        for (DetalleEnvioDto detalleEnvioDto : foundDetalleEnvios) {
+            Assertions.assertEquals(detalleEnvioDto.estadoEnvio(), estadoEnvio);
+        }
     }
 }

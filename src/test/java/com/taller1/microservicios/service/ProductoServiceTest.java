@@ -14,7 +14,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,6 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
 
 @ExtendWith({MockitoExtension.class})
 public class ProductoServiceTest {
@@ -147,7 +145,7 @@ public class ProductoServiceTest {
         given(productoRepository.findAll()).willReturn(productos);
         given(productoMapper.productosListToProductosDtoList(any())).willReturn(productoDtos);
         List<ProductoDto> productosDtosService = productoService.getAllProductos();
-        Assertions.assertNotNull(productosDtosService);
+        Assertions.assertFalse(productosDtosService.isEmpty());
         Assertions.assertEquals(productosDtosService.size(), 2);
     }
 
@@ -190,7 +188,7 @@ public class ProductoServiceTest {
         given(productoRepository.findByNombreContainingIgnoreCase(palabra)).willReturn(productos);
         given(productoMapper.productosListToProductosDtoList(productos)).willReturn(productoDtoList);
         List<ProductoDto> productoDtos = productoService.buscarProductoByTermino(palabra);
-        Assertions.assertNotNull(productoDtos);
+        Assertions.assertFalse(productoDtos.isEmpty());
         Assertions.assertEquals(productoDtos.size(), 2);
     }
 
@@ -208,7 +206,7 @@ public class ProductoServiceTest {
         given(productoRepository.findByInStock()).willReturn(productos);
         given(productoMapper.productosListToProductosDtoList(productos)).willReturn(productoDtoList);
         List<ProductoDto> productoDtos = productoService.buscarProductosEnStock();
-        Assertions.assertNotNull(productoDtos);
+        Assertions.assertFalse(productoDtos.isEmpty());
         Assertions.assertEquals(productoDtos.size(), 2);
     }
     @Test
@@ -227,7 +225,7 @@ public class ProductoServiceTest {
         given(productoRepository.findByPrecioLessThanEqualAndStockLessThanEqual(precioMax, stockMax)).willReturn(productos);
         given(productoMapper.productosListToProductosDtoList(productos)).willReturn(productoDtoList);
         List<ProductoDto> productoDtos = productoService.buscarProductoMenoresByPrecioAndStock(precioMax, stockMax);
-        Assertions.assertNotNull(productoDtos);
+        Assertions.assertFalse(productoDtos.isEmpty());
         Assertions.assertEquals(productoDtos.size(), 2);
     }
 }

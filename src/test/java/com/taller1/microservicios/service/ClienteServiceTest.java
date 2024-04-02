@@ -146,7 +146,7 @@ public class ClienteServiceTest {
         given(clienteRepository.findAll()).willReturn(clientes);
         given(clienteMapper.clienteListToClienteDtoList(any())).willReturn(clienteDtos);
         List<ClienteDto> clientesDtosService = clienteService.getAllClientes();
-        Assertions.assertNotNull(clientesDtosService);
+        Assertions.assertFalse(clientesDtosService.isEmpty());
         Assertions.assertEquals(clientesDtosService.size(), 2);
     }
 
@@ -158,5 +158,64 @@ public class ClienteServiceTest {
         doNothing().when(clienteRepository).delete(cliente);
         clienteService.removerCliente(clienteId);
         Assertions.assertAll(() -> clienteService.removerCliente(clienteId));
+    }
+    @Test
+    void givenEmail_whenFindByEmail_returnClienteDto() {
+        String email = "juan@gmail.com";
+        Cliente clienteMock = getClienteMock();
+        ClienteDto clienteDto = new ClienteDto(
+                clienteMock.getId(),
+                clienteMock.getNombre(),
+                clienteMock.getEmail(),
+                clienteMock.getDireccion()
+        );
+        given(clienteRepository.findByEmail(email)).willReturn(Optional.of(clienteMock));
+        given(clienteMapper.clienteToClienteDto(any(Cliente.class))).willReturn(clienteDto);
+        ClienteDto foundCliente = clienteService.buscarClienteByEmail(email);
+        Assertions.assertNotNull(foundCliente);
+        Assertions.assertEquals(clienteMock.getEmail(), foundCliente.email());
+    }
+    @Test
+    void whenFindByDireccion_returnClienteDto() {
+        String direccion = "Calle ABC";
+        Cliente clienteMock = getClienteMock();
+        ClienteDto clienteDto = new ClienteDto(
+                clienteMock.getId(),
+                clienteMock.getNombre(),
+                clienteMock.getEmail(),
+                clienteMock.getDireccion()
+        );
+        given(clienteRepository.findByDireccion(direccion)).willReturn(Optional.of(clienteMock));
+        given(clienteMapper.clienteToClienteDto(any(Cliente.class))).willReturn(clienteDto);
+        ClienteDto foundCliente = clienteService.buscarClienteByDireccion(direccion);
+        Assertions.assertNotNull(foundCliente);
+        Assertions.assertEquals(clienteMock.getDireccion(), foundCliente.direccion());
+    }
+    @Test
+    void whenFindByNombreStartsWith_returnClienteDtoList() {
+        String nombre = "sofi";
+        List<Cliente> clientesMock = new ArrayList<>();
+        clientesMock.add(Cliente.builder()
+                .id(2L)
+                .nombre("Sofia")
+                .email("sofia@gmail.com")
+                .direccion("Calle 123")
+                .build()
+        );
+        List<ClienteDto> clientesDtoMock = clientesMock.stream().map(cliente ->
+                new ClienteDto(
+                        cliente.getId(),
+                        cliente.getNombre(),
+                        cliente.getEmail(),
+                        cliente.getDireccion()
+                )
+        ).toList();
+        given(clienteRepository.findByNombreStartingWithIgnoreCase(nombre)).willReturn(clientesMock);
+        given(clienteMapper.clienteListToClienteDtoList(any())).willReturn(clientesDtoMock);
+        List<ClienteDto> foundClientes = clienteService.buscarClientesNombreEmpiezaPor(nombre);
+        Assertions.assertFalse(foundClientes.isEmpty());
+        for (ClienteDto cliente : foundClientes) {
+            Assertions.assertTrue(cliente.nombre().toLowerCase().startsWith(nombre));
+        }
     }
 }

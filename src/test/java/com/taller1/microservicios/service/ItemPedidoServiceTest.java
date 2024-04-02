@@ -21,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -61,6 +62,8 @@ public class ItemPedidoServiceTest {
                 .id(1L)
                 .cantidad(10)
                 .precioUnitario(2000d)
+                .pedido(this.pedido)
+                .producto(this.producto)
                 .build();
     }
     List<ItemPedido> getItemPedidoListMock() {
@@ -69,12 +72,16 @@ public class ItemPedidoServiceTest {
                 .id(1L)
                 .cantidad(10)
                 .precioUnitario(2000d)
+                .pedido(this.pedido)
+                .producto(this.producto)
                 .build()
         );
         itemPedidos.add(ItemPedido.builder()
                 .id(2L)
                 .cantidad(10)
                 .precioUnitario(2000d)
+                .pedido(this.pedido)
+                .producto(this.producto)
                 .build()
         );
         return itemPedidos;
@@ -168,7 +175,7 @@ public class ItemPedidoServiceTest {
         given(itemPedidoRepository.findAll()).willReturn(itemPedidos);
         given(itemPedidoMapper.itemPedidoListToItemPedidoDtoList(any())).willReturn(itemPedidoDtos);
         List<ItemPedidoDto> itemPedidosDtosService = itemPedidoService.getAllItemPedidos();
-        Assertions.assertNotNull(itemPedidosDtosService);
+        Assertions.assertFalse(itemPedidosDtosService.isEmpty());
         Assertions.assertEquals(itemPedidosDtosService.size(), 2);
     }
 
@@ -180,5 +187,65 @@ public class ItemPedidoServiceTest {
         doNothing().when(itemPedidoRepository).delete(itemPedido);
         itemPedidoService.removerItemPedido(itemPedidoId);
         Assertions.assertAll(() -> itemPedidoService.removerItemPedido(itemPedidoId));
+    }
+
+    @Test
+    void whenFindByPedidoId_returnItemPedidoDtoList() {
+        Long pedidoId = 1L;
+        List<ItemPedido> itemsPedidosMock = getItemPedidoListMock();
+        List<ItemPedidoDto> itemPedidoDtos = itemsPedidosMock.stream().map(itemPedido ->
+                new ItemPedidoDto(
+                        itemPedido.getId(),
+                        itemPedido.getCantidad(),
+                        itemPedido.getPrecioUnitario(),
+                        this.pedido.getId(),
+                        this.producto.getId()
+                )
+        ).toList();
+        given(itemPedidoRepository.findByPedidoId(pedidoId)).willReturn(itemsPedidosMock);
+        given(itemPedidoMapper.itemPedidoListToItemPedidoDtoList(any())).willReturn(itemPedidoDtos);
+        List<ItemPedidoDto> foundItemPedido = itemPedidoService.buscarItemPedidoByidPedido(pedidoId);
+        Assertions.assertFalse(foundItemPedido.isEmpty());
+        for (ItemPedidoDto itemPedidoDto : foundItemPedido) {
+            Assertions.assertEquals(itemPedidoDto.pedidoId(), pedidoId);
+        }
+    }
+
+    @Test
+    void whenFindByProductoId_returnItemPedidoDtoList() {
+        Long productoId = 1L;
+        List<ItemPedido> itemsPedidosMock = getItemPedidoListMock();
+        List<ItemPedidoDto> itemPedidoDtos = itemsPedidosMock.stream().map(itemPedido ->
+                new ItemPedidoDto(
+                        itemPedido.getId(),
+                        itemPedido.getCantidad(),
+                        itemPedido.getPrecioUnitario(),
+                        this.pedido.getId(),
+                        this.producto.getId()
+                )
+        ).toList();
+        given(itemPedidoRepository.findByProductoId(productoId)).willReturn(itemsPedidosMock);
+        given(itemPedidoMapper.itemPedidoListToItemPedidoDtoList(any())).willReturn(itemPedidoDtos);
+        List<ItemPedidoDto> foundItemPedido = itemPedidoService.buscarItemPedidoByidProducto(productoId);
+        Assertions.assertFalse(foundItemPedido.isEmpty());
+        for (ItemPedidoDto itemPedidoDto : foundItemPedido) {
+            Assertions.assertEquals(itemPedidoDto.productoId(), productoId);
+        }
+    }
+
+    @Test
+    void givenProductoId_whenSumaTotalVentas_returnTotalVentas() {
+        Long productoId = 1L;
+        List<ItemPedido> itemsPedidosMock = getItemPedidoListMock();
+        Double sumaTotal = 0d;
+        for(ItemPedido itemPedido : itemsPedidosMock) {
+            if (Objects.equals(itemPedido.getProducto().getId(), productoId)) {
+                sumaTotal += itemPedido.getCantidad() * itemPedido.getPrecioUnitario();
+            }
+        }
+        given(itemPedidoRepository.findTotalVentasByProducto(productoId)).willReturn(Optional.of(sumaTotal));
+        Double sumaTotalItems = itemPedidoService.sumaTotalVentasDeidProducto(productoId);
+        Assertions.assertNotNull(sumaTotalItems);
+        Assertions.assertEquals(sumaTotalItems, sumaTotal);
     }
 }
