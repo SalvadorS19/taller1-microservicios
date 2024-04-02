@@ -31,18 +31,17 @@ public class PedidoRepositoryTest extends AbstractIntegrationDBTest {
     void setUp() { pedidoRepository.deleteAll(); }
 
     Pedido getPedidoMock() {
+        Cliente cliente = Cliente.builder().build();
+        cliente = clienteRepository.save(cliente);
+
         return Pedido.builder()
                 .fechaPedido(LocalDateTime.of(2024, Month.MARCH, 25, 12, 0))
                 .estadoPedido(EstadoPedido.PENDIENTE)
+                .cliente(cliente)
                 .build();
     }
 
     List<Pedido> getPedidoListMock() {
-        List<ItemPedido> itemPedidos = new ArrayList<>();
-        itemPedidos.add(ItemPedido.builder().build());
-        itemPedidos.add(ItemPedido.builder().build());
-
-        itemPedidos = itemPedidoRepository.saveAll(itemPedidos);
 
         Cliente cliente = Cliente.builder().build();
         cliente = clienteRepository.save(cliente);
@@ -52,7 +51,6 @@ public class PedidoRepositoryTest extends AbstractIntegrationDBTest {
                 .fechaPedido(LocalDateTime.of(2024, Month.MARCH, 25, 12, 0))
                 .estadoPedido(EstadoPedido.PENDIENTE)
                 .cliente(cliente)
-                .itemsPedido(itemPedidos)
                 .build()
         );
         pedidos.add(Pedido.builder()
@@ -62,7 +60,7 @@ public class PedidoRepositoryTest extends AbstractIntegrationDBTest {
                 .build()
         );
         pedidos.add(Pedido.builder()
-                .fechaPedido(LocalDateTime.of(2024, Month.MARCH, 25, 12, 0))
+                .fechaPedido(LocalDateTime.of(2024, Month.DECEMBER, 25, 12, 0))
                 .estadoPedido(EstadoPedido.ENVIADO)
                 .cliente(cliente)
                 .build()
@@ -162,7 +160,7 @@ public class PedidoRepositoryTest extends AbstractIntegrationDBTest {
         //Given
         pedidoRepository.saveAll(getPedidoListMock());
         Long idCliente = 1L;
-        EstadoPedido estado = EstadoPedido.ENVIADO;
+        EstadoPedido estado = EstadoPedido.PENDIENTE;
         //When
         List<Pedido> foundPedidos = pedidoRepository.findByClienteIdAndEstadoPedido(idCliente, estado);
         //Then
@@ -170,10 +168,18 @@ public class PedidoRepositoryTest extends AbstractIntegrationDBTest {
     }
 
     @Test
-    @DisplayName("Buscar pedido por idcliente y estado del pedido")
+    @DisplayName("Buscar pedido con productos por idcliente ")
     void givenIdCLiente_WhenFindIdClienteConProductos_thenPedidos(){
         //Given
-        pedidoRepository.saveAll(getPedidoListMock());
+        Pedido pedido = getPedidoMock();
+        pedido= pedidoRepository.save(pedido);
+        List<ItemPedido> itemPedidos = new ArrayList<>();
+        itemPedidos.add(ItemPedido.builder().pedido(pedido).build());
+        itemPedidos.add(ItemPedido.builder().pedido(pedido).build());
+        itemPedidos= itemPedidoRepository.saveAll(itemPedidos);
+        ItemPedido item = itemPedidos.get(0);
+        item.setPedido(pedido);
+        itemPedidoRepository.save(item);
         Long idCliente = 1L;
         //When
         List<Pedido> foundPedidos = pedidoRepository.findPedidoConProductosByCliente(idCliente);
